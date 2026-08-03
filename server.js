@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import session from 'express-session';
 import { testConnection, closePool } from './db/pool.js';
+import beansRouter, { processesRouter } from './routes/beans.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -42,14 +43,16 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API 라우터 마운트 ---------------------------------------------
-// 각 라우터 파일을 만들면 아래 주석을 푼다. import는 파일 상단으로 옮긴다.
-// import beansRouter from './routes/beans.js';
+app.use('/api/beans', beansRouter);
+// 가공방식 목록은 경로가 /api/beans 아래가 아니라 별도라 따로 붙인다.
+app.use('/api/processes', processesRouter);
+
+// 나머지 라우터 파일을 만들면 아래 주석을 푼다. import는 파일 상단으로 옮긴다.
 // import authRouter from './routes/auth.js';
 // import notesRouter from './routes/notes.js';
 // import favoritesRouter from './routes/favorites.js';
 // import statsRouter from './routes/stats.js';
 //
-// app.use('/api/beans', beansRouter);
 // app.use('/api/auth', authRouter);
 // app.use('/api/notes', notesRouter);
 // app.use('/api/favorites', favoritesRouter);
