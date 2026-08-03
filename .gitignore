@@ -1,0 +1,11 @@
+node_modules/
+.env
+
+# 로그·런타임 부산물
+npm-debug.log*
+*.log
+
+# OS·에디터
+.DS_Store
+Thumbs.db
+.vscode/

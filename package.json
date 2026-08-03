@@ -1,0 +1,23 @@
+{
+  "name": "coe-archive",
+  "version": "1.0.0",
+  "description": "Cup of Excellence 2025 수상 커피 아카이브",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node db/seed.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.22.0"
+  }
+}
