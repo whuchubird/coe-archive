@@ -1,0 +1,3305 @@
+{
+  "meta": {
+    "title": "Cup of Excellence 2025 아카이브",
+    "source": "Alliance for Coffee Excellence (ACE) 공식 경쟁·경매 결과",
+    "sourceUrls": [
+      "https://allianceforcoffeeexcellence.org/brazil-2025/",
+      "https://allianceforcoffeeexcellence.org/guatemala-2025/"
+    ],
+    "collectedAt": "2026-07-31",
+    "scope": "브라질 COE 2025, 과테말라 COE 2025 (COE 수상 로트 + National Winner 로트)",
+    "totalBeans": 74,
+    "notes": [
+      "농장명·생산자·품종·가공방식·지역·점수·낙찰가·낙찰업체는 ACE 공식 발표 데이터입니다.",
+      "sensory(향·산미·바디·단맛·후미·밸런스) 6축 값과 flavorNotes는 공식 공개 항목이 아니며, 가공방식·품종·총점을 근거로 산출한 추정치입니다. 시각화 시연 목적이며 실제 커핑 점수가 아닙니다.",
+      "auction.hasKoreanBuyer는 낙찰 업체명을 수동으로 대조한 참고값입니다.",
+      "원본 표에서 1A/1B로 분할 판매된 로트는 대표 1건으로 통합하고 최고 낙찰가를 기록했습니다.",
+      "원본에 'oo,5o' 같은 오타와 쉼표 소수점(91,37) 표기가 있어 숫자로 정규화했습니다."
+    ]
+  },
+  "processes": [
+    {
+      "key": "washed",
+      "nameKo": "워시드",
+      "nameEn": "Washed",
+      "summary": "점액질을 물로 완전히 제거한 뒤 건조하는 방식.",
+      "detail": "수확한 체리의 과육을 벗기고 물탱크에서 12~36시간 발효시켜 점액질을 분해한 뒤 세척한다. 과육 유래 당분이 거의 남지 않아 품종과 떼루아가 그대로 드러나며, 깨끗한 산미와 투명한 캐릭터가 특징이다. 대신 단맛과 바디는 상대적으로 절제된다.",
+      "acidity": 5,
+      "body": 2,
+      "sweetness": 3,
+      "cleanliness": 5
+    },
+    {
+      "key": "honey",
+      "nameKo": "허니",
+      "nameEn": "Honey",
+      "summary": "점액질을 일부 남긴 채 건조하는 중간 방식.",
+      "detail": "과육만 벗기고 끈적한 점액질(뮤실리지)을 남긴 상태로 건조한다. 남기는 양에 따라 옐로우·레드·블랙 허니로 나뉘며, 많이 남길수록 단맛과 바디가 올라가고 발효 리스크도 커진다. 워시드의 깔끔함과 내추럴의 단맛 사이에 위치한다.",
+      "acidity": 4,
+      "body": 4,
+      "sweetness": 4,
+      "cleanliness": 4
+    },
+    {
+      "key": "pulped-natural",
+      "nameKo": "펄프드 내추럴",
+      "nameEn": "Pulped Natural",
+      "summary": "브라질에서 발전한 허니 계열 가공.",
+      "detail": "과육을 벗긴 뒤 점액질을 남겨 건조한다는 점에서 허니와 원리가 같지만, 브라질의 건조한 기후와 대규모 파티오 건조 환경에 맞춰 독자적으로 정착한 명칭이다. 초콜릿·견과 계열의 묵직한 단맛이 잘 표현된다.",
+      "acidity": 3,
+      "body": 4,
+      "sweetness": 4,
+      "cleanliness": 4
+    },
+    {
+      "key": "natural",
+      "nameKo": "내추럴",
+      "nameEn": "Natural",
+      "summary": "체리를 통째로 건조하는 가장 오래된 방식.",
+      "detail": "과육을 제거하지 않고 체리째 20~30일간 건조한다. 건조 과정에서 과육의 당분과 향기 성분이 씨앗으로 이행해 딸기·베리 계열의 진한 과일향과 두터운 바디가 만들어진다. 건조 관리가 조금만 어긋나도 과발효취가 생기기 때문에 난이도가 높다.",
+      "acidity": 3,
+      "body": 5,
+      "sweetness": 5,
+      "cleanliness": 3
+    },
+    {
+      "key": "experimental",
+      "nameKo": "실험적 가공",
+      "nameEn": "Experimental",
+      "summary": "미생물과 발효 조건을 의도적으로 설계하는 현대적 가공.",
+      "detail": "밀폐 탱크에서 산소를 차단해 발효시키는 애너로빅(무산소 발효), 특정 효모나 유산균을 접종하는 이노큘레이션, 과일이나 다른 원료를 함께 발효시키는 코퍼멘테이션 등이 여기 속한다. 온도·pH·시간을 통제해 리치, 패션프룻, 계피 같은 원래 커피에 없던 향미를 끌어낸다. 개성이 강한 만큼 '가향 논란'처럼 투명성을 둘러싼 논쟁도 함께 따라다닌다.",
+      "acidity": 4,
+      "body": 4,
+      "sweetness": 5,
+      "cleanliness": 3
+    }
+  ],
+  "beans": [
+    {
+      "id": "BR25W01",
+      "name": "브라질 Fazenda Agua Limpa",
+      "farm": "Fazenda Agua Limpa",
+      "farmer": "Marcelo Assis Nogueira",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 91.37,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 55.1,
+        "weightLb": 198.42,
+        "totalValueUsd": 10932.94,
+        "buyers": [
+          "Snow Beans Coffee",
+          "YN Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.2,
+        "acidity": 3.8,
+        "body": 4.7,
+        "sweetness": 4.8,
+        "aftertaste": 4.4,
+        "balance": 4.5
+      },
+      "flavorNotes": [
+        "꿀",
+        "황설탕",
+        "붉은사과",
+        "건포도"
+      ]
+    },
+    {
+      "id": "BR25W02",
+      "name": "브라질 Fazenda Boa Vista",
+      "farm": "Fazenda Boa Vista",
+      "farmer": "Marcelo Carvalho Ferraz",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 90.82,
+      "varieties": [
+        "Catucaí"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 15.6,
+        "weightLb": 793.66,
+        "totalValueUsd": 12381.1,
+        "buyers": [
+          "Sarutahiko Coffee Inc."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.6,
+        "acidity": 3.9,
+        "body": 4.4,
+        "sweetness": 4.7,
+        "aftertaste": 4.1,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25W03",
+      "name": "브라질 Fazenda Água Limpa",
+      "farm": "Fazenda Água Limpa",
+      "farmer": "Osvaldina Alves Dutra",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Matas de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 90.5,
+      "varieties": [
+        "Kent"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 37.2,
+        "weightLb": 396.83,
+        "totalValueUsd": 14762.08,
+        "buyers": [
+          "Angelino's Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 4.0,
+        "body": 3.7,
+        "sweetness": 4.2,
+        "aftertaste": 4.2,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "꿀",
+        "황설탕",
+        "붉은사과",
+        "건포도"
+      ]
+    },
+    {
+      "id": "BR25W04",
+      "name": "브라질 Sitio Pedro Varinhas",
+      "farm": "Sitio Pedro Varinhas",
+      "farmer": "Ercilei José De Oliveira",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Matas de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 90.08,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 17.0,
+        "weightLb": 396.83,
+        "totalValueUsd": 6746.11,
+        "buyers": [
+          "Vivid Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 4.0,
+        "body": 4.2,
+        "sweetness": 4.8,
+        "aftertaste": 3.8,
+        "balance": 4.8
+      },
+      "flavorNotes": [
+        "꿀",
+        "황설탕",
+        "붉은사과",
+        "건포도"
+      ]
+    },
+    {
+      "id": "BR25W05",
+      "name": "브라질 Fazenda Canastra",
+      "farm": "Fazenda Canastra",
+      "farmer": "Edson Luiz Ignacio",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 89.32,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 13.6,
+        "weightLb": 661.39,
+        "totalValueUsd": 8994.9,
+        "buyers": [
+          "MI Coffee Corporation"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.8,
+        "body": 4.1,
+        "sweetness": 4.6,
+        "aftertaste": 4.0,
+        "balance": 4.2
+      },
+      "flavorNotes": [
+        "꿀",
+        "황설탕",
+        "붉은사과",
+        "건포도"
+      ]
+    },
+    {
+      "id": "BR25W06",
+      "name": "브라질 Sitio Vargem Grande",
+      "farm": "Sitio Vargem Grande",
+      "farmer": "Maria Aparecida Barroso Dos Santos",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Matas de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 88.34,
+      "varieties": [
+        "Catucaí Amarelo"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 13.7,
+        "weightLb": 661.39,
+        "totalValueUsd": 9061.04,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.3,
+        "acidity": 4.6,
+        "body": 3.6,
+        "sweetness": 3.6,
+        "aftertaste": 3.9,
+        "balance": 4.3
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "BR25W07",
+      "name": "브라질 Fazenda Santa Cecília",
+      "farm": "Fazenda Santa Cecília",
+      "farmer": "Dora Conceição Xavier Cerqueira Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 88.21,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 15.2,
+        "weightLb": 396.83,
+        "totalValueUsd": 6031.82,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.4,
+        "acidity": 3.3,
+        "body": 4.4,
+        "sweetness": 4.7,
+        "aftertaste": 3.7,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25W08",
+      "name": "브라질 Sítio Córrego Frio",
+      "farm": "Sítio Córrego Frio",
+      "farmer": "Ronaldo Da Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 87.71,
+      "varieties": [
+        "Bourbon Amarelo"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 13.6,
+        "weightLb": 396.83,
+        "totalValueUsd": 5396.89,
+        "buyers": [
+          "NOZY COFFEE"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.4,
+        "acidity": 3.8,
+        "body": 3.9,
+        "sweetness": 4.6,
+        "aftertaste": 3.8,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25W09",
+      "name": "브라질 Sitio Santa Terezinha",
+      "farm": "Sitio Santa Terezinha",
+      "farmer": "Edson Rosa Garcia",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 9,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 87.42,
+      "varieties": [
+        "Obatã Vermelho"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 13.0,
+        "weightLb": 661.39,
+        "totalValueUsd": 8598.07,
+        "buyers": [
+          "BP COMMERCE"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.7,
+        "acidity": 3.4,
+        "body": 3.9,
+        "sweetness": 3.9,
+        "aftertaste": 3.4,
+        "balance": 4.0
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25W10",
+      "name": "브라질 Sítio Capadócia II",
+      "farm": "Sítio Capadócia II",
+      "farmer": "Augusto B Ferreira",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 10,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 87.37,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 13.7,
+        "weightLb": 661.39,
+        "totalValueUsd": 9061.04,
+        "buyers": [
+          "Fadie Sasaguri Roastery Corporation"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.7,
+        "acidity": 3.3,
+        "body": 4.2,
+        "sweetness": 4.4,
+        "aftertaste": 3.9,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25N01",
+      "name": "브라질 Fazenda Aracaçu",
+      "farm": "Fazenda Aracaçu",
+      "farmer": "Paulo Fernando Chaves De Brito",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Sul de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 90.79,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 65.1,
+        "weightLb": 264.55,
+        "totalValueUsd": 17222.21,
+        "buyers": [
+          "Snow Beans Coffee",
+          "ASSIST COFFEE ROASTERY",
+          "KURIHARA COFFEE ROASTERS"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.2,
+        "acidity": 3.3,
+        "body": 5.0,
+        "sweetness": 5.0,
+        "aftertaste": 4.2,
+        "balance": 4.3
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N02",
+      "name": "브라질 Fazenda Sucuri",
+      "farm": "Fazenda Sucuri",
+      "farmer": "Danilo Barbosa",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 90.32,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 21.6,
+        "weightLb": 462.97,
+        "totalValueUsd": 10000.15,
+        "buyers": [
+          "Sarutahiko Coffee Inc."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.9,
+        "acidity": 4.1,
+        "body": 4.2,
+        "sweetness": 4.8,
+        "aftertaste": 4.5,
+        "balance": 4.3
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "BR25N03",
+      "name": "브라질 Fazenda Chapadão",
+      "farm": "Fazenda Chapadão",
+      "farmer": "Gustavo Andrade Alvarenga",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 90.11,
+      "varieties": [
+        "Paraíso"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 15.7,
+        "weightLb": 661.39,
+        "totalValueUsd": 10383.82,
+        "buyers": [
+          "SENSEL COFFEE"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 3.7,
+        "body": 4.7,
+        "sweetness": 4.4,
+        "aftertaste": 4.1,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N04",
+      "name": "브라질 Fazenda Olhos D'Água",
+      "farm": "Fazenda Olhos D'Água",
+      "farmer": "Flávio Márcio Ferreira Da Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 89.55,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 15.2,
+        "weightLb": 396.83,
+        "totalValueUsd": 6031.82,
+        "buyers": [
+          "Dongsuh Foods Corporation"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.4,
+        "body": 4.7,
+        "sweetness": 4.9,
+        "aftertaste": 4.4,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N05",
+      "name": "브라질 Fazenda Sertão",
+      "farm": "Fazenda Sertão",
+      "farmer": "Francisco Isidro Dias Pereira E Outros",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 89.32,
+      "varieties": [
+        "Topázio"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 15.3,
+        "weightLb": 859.8,
+        "totalValueUsd": 13154.94,
+        "buyers": [
+          "CAMEL COFFEE CO.,LTD. (KALDI COFFEE FARM)"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 3.7,
+        "body": 4.4,
+        "sweetness": 4.6,
+        "aftertaste": 4.3,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N06",
+      "name": "브라질 Sitio Ponte Alta",
+      "farm": "Sitio Ponte Alta",
+      "farmer": "Oliveira Consultoria & Treinamento Ltda",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Sul de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 88.18,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 13.3,
+        "weightLb": 859.8,
+        "totalValueUsd": 11435.34,
+        "buyers": [
+          "honu 加藤珈琲店"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.3,
+        "acidity": 3.2,
+        "body": 4.8,
+        "sweetness": 5.0,
+        "aftertaste": 4.3,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N07",
+      "name": "브라질 Sitio Ponte Alta",
+      "farm": "Sitio Ponte Alta",
+      "farmer": "Fatima Cilene Oliveira Lami",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 88.08,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 12.1,
+        "weightLb": 859.8,
+        "totalValueUsd": 10403.58,
+        "buyers": [
+          "Wataru for TAKAMURA COFFEE ROASTERS"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.3,
+        "acidity": 3.2,
+        "body": 4.8,
+        "sweetness": 5.0,
+        "aftertaste": 4.3,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N08",
+      "name": "브라질 Sítio Santa Fé",
+      "farm": "Sítio Santa Fé",
+      "farmer": "Rosângela Camelo Sebe Barbosa",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 88.05,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 15.0,
+        "weightLb": 396.83,
+        "totalValueUsd": 5952.45,
+        "buyers": [
+          "Greenoak Coffee",
+          "103 Coffee Roasters"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.0,
+        "acidity": 3.4,
+        "body": 4.3,
+        "sweetness": 5.0,
+        "aftertaste": 4.1,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N09",
+      "name": "브라질 Fazenda Santa Terezinha",
+      "farm": "Fazenda Santa Terezinha",
+      "farmer": "Fabricio Faria Almeida",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 9,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 87.66,
+      "varieties": [
+        "Arara",
+        "Catucaí Amarelo",
+        "Mundo Novo"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 11.9,
+        "weightLb": 462.97,
+        "totalValueUsd": 5509.34,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.0,
+        "acidity": 3.3,
+        "body": 4.4,
+        "sweetness": 5.0,
+        "aftertaste": 4.0,
+        "balance": 4.0
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25N10",
+      "name": "브라질 Fazenda Vale Do Cristal",
+      "farm": "Fazenda Vale Do Cristal",
+      "farmer": "Tomio Fukuda",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Chapada de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 10,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 87.58,
+      "varieties": [
+        "Catucaí Açu"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 12.4,
+        "weightLb": 793.66,
+        "totalValueUsd": 9841.38,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.1,
+        "body": 4.4,
+        "sweetness": 4.7,
+        "aftertaste": 4.2,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25E01",
+      "name": "브라질 Fazenda Rio Verde",
+      "farm": "Fazenda Rio Verde",
+      "farmer": "Ipanema Agrícola S/A",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 91.68,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 61.4,
+        "weightLb": 198.42,
+        "totalValueUsd": 12182.99,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 5.0,
+        "body": 3.6,
+        "sweetness": 5.0,
+        "aftertaste": 4.7,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "리치",
+        "패션프룻",
+        "장미",
+        "화이트와인"
+      ]
+    },
+    {
+      "id": "BR25E02",
+      "name": "브라질 Fazenda Rancho Grande",
+      "farm": "Fazenda Rancho Grande",
+      "farmer": "José Carlos Dos Reis",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Sul de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 91.11,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 45.2,
+        "weightLb": 661.39,
+        "totalValueUsd": 29894.83,
+        "buyers": [
+          "TRUTH ROASTERY"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.7,
+        "acidity": 3.9,
+        "body": 4.8,
+        "sweetness": 5.0,
+        "aftertaste": 4.4,
+        "balance": 4.2
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E03",
+      "name": "브라질 Sitio Sao Sebastiao",
+      "farm": "Sitio Sao Sebastiao",
+      "farmer": "Sebastião Daniel Da Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 90.29,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 17.0,
+        "weightLb": 396.83,
+        "totalValueUsd": 6746.11,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.7,
+        "acidity": 4.2,
+        "body": 4.8,
+        "sweetness": 5.0,
+        "aftertaste": 4.5,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E04",
+      "name": "브라질 Fazenda Olhos D'Água",
+      "farm": "Fazenda Olhos D'Água",
+      "farmer": "Flávio Márcio Ferreira Da Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 89.89,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 20.3,
+        "weightLb": 396.83,
+        "totalValueUsd": 8055.65,
+        "buyers": [
+          "Ryans Coffee Roasters",
+          "Haodee Coffee Roasters",
+          "MAGE COFFEE",
+          "Citric meets Malic",
+          "Vivid Coffee"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.6,
+        "acidity": 4.0,
+        "body": 4.4,
+        "sweetness": 5.0,
+        "aftertaste": 4.6,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E05",
+      "name": "브라질 Casa Brás",
+      "farm": "Casa Brás",
+      "farmer": "Pedro Brás",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Café da Canastra",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 89.11,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 16.1,
+        "weightLb": 462.97,
+        "totalValueUsd": 7453.82,
+        "buyers": [
+          "Solberg & Hansen AS"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.6,
+        "body": 3.3,
+        "sweetness": 4.9,
+        "aftertaste": 4.7,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "리치",
+        "패션프룻",
+        "장미",
+        "화이트와인"
+      ]
+    },
+    {
+      "id": "BR25E06",
+      "name": "브라질 Fazenda Abaete Dos Mendes",
+      "farm": "Fazenda Abaete Dos Mendes",
+      "farmer": "Eduardo Henrique Soares Pereira",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 89.08,
+      "varieties": [
+        "Acauã"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 21.9,
+        "weightLb": 396.83,
+        "totalValueUsd": 8690.58,
+        "buyers": [
+          "Sulalat"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.8,
+        "acidity": 3.8,
+        "body": 3.8,
+        "sweetness": 4.6,
+        "aftertaste": 4.2,
+        "balance": 3.5
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E07",
+      "name": "브라질 Fazenda Boa Vista De Pinhal 2",
+      "farm": "Fazenda Boa Vista De Pinhal 2",
+      "farmer": "Maria Jose Jardini Da Cunha",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Região de Pinhal",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 88.82,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 18.8,
+        "weightLb": 396.83,
+        "totalValueUsd": 7460.4,
+        "buyers": [
+          "Sulalat"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.9,
+        "acidity": 3.6,
+        "body": 4.5,
+        "sweetness": 5.0,
+        "aftertaste": 4.3,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E08",
+      "name": "브라질 Fazenda Água Limpa",
+      "farm": "Fazenda Água Limpa",
+      "farmer": "Osvaldina Alves Dutra",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Matas de Minas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 88.37,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 15.2,
+        "weightLb": 462.97,
+        "totalValueUsd": 7037.14,
+        "buyers": [
+          "Ecofarm Coffee (China)"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.8,
+        "body": 3.2,
+        "sweetness": 4.6,
+        "aftertaste": 4.8,
+        "balance": 3.5
+      },
+      "flavorNotes": [
+        "리치",
+        "패션프룻",
+        "장미",
+        "화이트와인"
+      ]
+    },
+    {
+      "id": "BR25E09",
+      "name": "브라질 Fazenda Das Almas",
+      "farm": "Fazenda Das Almas",
+      "farmer": "Matheus Maringoli Muniz",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Região Vulcânica",
+      "year": 2025,
+      "award": "COE",
+      "rank": 9,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 88.24,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 20.2,
+        "weightLb": 396.83,
+        "totalValueUsd": 8015.97,
+        "buyers": [
+          "Idle Hands Roasting Co."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.5,
+        "acidity": 4.1,
+        "body": 4.1,
+        "sweetness": 4.8,
+        "aftertaste": 4.5,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25E10",
+      "name": "브라질 Fazenda Santa Terezinha",
+      "farm": "Fazenda Santa Terezinha",
+      "farmer": "Weber Marcos Dias",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Região Vulcânica",
+      "year": 2025,
+      "award": "COE",
+      "rank": 10,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 88.16,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 12.2,
+        "weightLb": 396.83,
+        "totalValueUsd": 4841.33,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.6,
+        "acidity": 4.0,
+        "body": 4.2,
+        "sweetness": 5.0,
+        "aftertaste": 4.3,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25NW01",
+      "name": "브라질 Dom Silvério",
+      "farm": "Dom Silvério",
+      "farmer": "Paulo Henrique Miranda",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Matas de Minas",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 87.3,
+      "varieties": [
+        "Catucaí Vermelho"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 7.3,
+        "weightLb": 727.53,
+        "totalValueUsd": 5310.97,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.2,
+        "acidity": 4.6,
+        "body": 3.0,
+        "sweetness": 3.2,
+        "aftertaste": 3.3,
+        "balance": 4.5
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "BR25NW02",
+      "name": "브라질 Fazenda Moinho",
+      "farm": "Fazenda Moinho",
+      "farmer": "Thalita Baltazar Vilela Martins",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Washed + Honey",
+      "categoryKo": "워시드·허니",
+      "score": 86.2,
+      "varieties": [
+        "Acaiá"
+      ],
+      "process": "pulped-natural",
+      "processKo": "펄프드 내추럴",
+      "auction": {
+        "bidPerLb": 6.1,
+        "weightLb": 859.8,
+        "totalValueUsd": 5244.78,
+        "buyers": [
+          "Savaya Coffee LLC"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.1,
+        "acidity": 3.3,
+        "body": 3.7,
+        "sweetness": 3.7,
+        "aftertaste": 3.3,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "밀크초콜릿",
+        "헤이즐넛",
+        "황설탕",
+        "체리"
+      ]
+    },
+    {
+      "id": "BR25NW03",
+      "name": "브라질 Fazenda Vale Encantado",
+      "farm": "Fazenda Vale Encantado",
+      "farmer": "Francisco Antônio da Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Alta Mogiana",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 87.6,
+      "varieties": [
+        "Catuaí"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 6.4,
+        "weightLb": 793.66,
+        "totalValueUsd": 5079.42,
+        "buyers": [
+          "Savaya Coffee LLC"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.8,
+        "acidity": 3.1,
+        "body": 4.2,
+        "sweetness": 4.4,
+        "aftertaste": 3.9,
+        "balance": 4.0
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25NW04",
+      "name": "브라질 Fazenda Barra Funda",
+      "farm": "Fazenda Barra Funda",
+      "farmer": "André Luis Aguila Ribeiro",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Alta Mogiana",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 87.0,
+      "varieties": [
+        "Catuaí Vermelho"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 6.0,
+        "weightLb": 396.83,
+        "totalValueUsd": 2380.98,
+        "buyers": [
+          "ROAST Cafés"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.1,
+        "body": 4.6,
+        "sweetness": 4.5,
+        "aftertaste": 4.1,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25NW05",
+      "name": "브라질 Vista Alegre",
+      "farm": "Vista Alegre",
+      "farmer": "Maria Tereza Mattei de Souza",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Sul de Minas",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Natural",
+      "categoryKo": "내추럴",
+      "score": 86.9,
+      "varieties": [
+        "Catucaí 2 SL"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 6.15,
+        "weightLb": 396.83,
+        "totalValueUsd": 2440.5,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 3.2,
+        "body": 4.5,
+        "sweetness": 4.9,
+        "aftertaste": 4.0,
+        "balance": 4.0
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "BR25NW06",
+      "name": "브라질 Sitio Da Serra",
+      "farm": "Sitio Da Serra",
+      "farmer": "Marcio De Souza Franqueira",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Mantiqueira de Minas",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 87.9,
+      "varieties": [
+        "Obatã Vermelho"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 7.1,
+        "weightLb": 462.97,
+        "totalValueUsd": 3287.09,
+        "buyers": [
+          "Savaya Coffee LLC"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.8,
+        "acidity": 3.7,
+        "body": 4.0,
+        "sweetness": 4.6,
+        "aftertaste": 4.1,
+        "balance": 3.1
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25NW07",
+      "name": "브라질 Fazenda Samambaia",
+      "farm": "Fazenda Samambaia",
+      "farmer": "Henrique Dias Cambraia E Outros",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Campo das Vertentes",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 87.8,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 6.1,
+        "weightLb": 396.83,
+        "totalValueUsd": 2420.66,
+        "buyers": [
+          "Vivid Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.7,
+        "acidity": 3.8,
+        "body": 4.6,
+        "sweetness": 5.0,
+        "aftertaste": 4.2,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25NW08",
+      "name": "브라질 Fazenda Queixadas",
+      "farm": "Fazenda Queixadas",
+      "farmer": "Margarida Das Graças Silva",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Cerrado Mineiro",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 87.3,
+      "varieties": [
+        "Arara"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 6.0,
+        "weightLb": 396.83,
+        "totalValueUsd": 2380.98,
+        "buyers": [
+          "CAFEZA"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.6,
+        "acidity": 3.7,
+        "body": 4.2,
+        "sweetness": 4.7,
+        "aftertaste": 4.4,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "BR25NW09",
+      "name": "브라질 Sítio Mãe Da Providência",
+      "farm": "Sítio Mãe Da Providência",
+      "farmer": "Edenilson Aparecido De Carvalho",
+      "country": "Brazil",
+      "countryKo": "브라질",
+      "region": "Região Vulcânica",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Experimental",
+      "categoryKo": "실험적 가공",
+      "score": 87.2,
+      "varieties": [
+        "Catucaí Amarelo"
+      ],
+      "process": "experimental",
+      "processKo": "실험적 가공",
+      "auction": {
+        "bidPerLb": 7.1,
+        "weightLb": 396.83,
+        "totalValueUsd": 2817.49,
+        "buyers": [
+          "Savaya Coffee LLC"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.5,
+        "acidity": 3.9,
+        "body": 4.2,
+        "sweetness": 4.9,
+        "aftertaste": 4.4,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "열대과일",
+        "요거트",
+        "시나몬",
+        "럼레이즌"
+      ]
+    },
+    {
+      "id": "GT25W01",
+      "name": "과테말라 La Gran Manzana",
+      "farm": "La Gran Manzana",
+      "farmer": "Morales De La Peña, Angel Alejandro",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Huehuetenango",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 91.15,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 143.1,
+        "weightLb": 291.6,
+        "totalValueUsd": 41727.96,
+        "buyers": [
+          "Taiwan Coffee Development Association",
+          "BEAN SUPER 豆超國際",
+          "Orsir International Co 歐舍咖啡",
+          "Taiwan Coffee Laboratory"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.8,
+        "acidity": 5.0,
+        "body": 3.0,
+        "sweetness": 3.6,
+        "aftertaste": 4.4,
+        "balance": 4.7
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W02",
+      "name": "과테말라 El Morito",
+      "farm": "El Morito",
+      "farmer": "Monterroso Pineda, Jose Roberto",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Mataquescuintla",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 90.9,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 76.0,
+        "weightLb": 502.0,
+        "totalValueUsd": 38152.0,
+        "buyers": [
+          "DAESANG DIVES"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 5.0,
+        "body": 3.2,
+        "sweetness": 3.8,
+        "aftertaste": 4.4,
+        "balance": 4.5
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W03",
+      "name": "과테말라 El Socorro",
+      "farm": "El Socorro",
+      "farmer": "Juan Diego De la Cerda Bianchi",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Palencia",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 90.65,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 80.1,
+        "weightLb": 658.2,
+        "totalValueUsd": 52721.82,
+        "buyers": [
+          "MOMOS COFFEE"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.6,
+        "acidity": 5.0,
+        "body": 3.0,
+        "sweetness": 3.4,
+        "aftertaste": 4.1,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W04",
+      "name": "과테말라 Hacienda Del Café",
+      "farm": "Hacienda Del Café",
+      "farmer": "Pérez Castillo, Anapaula",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Huehuetenango",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 89.38,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 30.23,
+        "weightLb": 585.1,
+        "totalValueUsd": 17687.57,
+        "buyers": [
+          "Sarutahiko Coffee Inc."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 5.0,
+        "body": 3.0,
+        "sweetness": 3.4,
+        "aftertaste": 3.7,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W05",
+      "name": "과테말라 El Injerto I",
+      "farm": "El Injerto I",
+      "farmer": "Arturo Aguirre Escobar",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "La Libertad",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 89.24,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 33.5,
+        "weightLb": 612.5,
+        "totalValueUsd": 20518.75,
+        "buyers": [
+          "MOMOS COFFEE",
+          "KALAS COFFEE",
+          "MALIC COFFEE",
+          "DEEPBLUELAKE",
+          "HEBE COFFEE",
+          "SANGDOOGRAY",
+          "Always Au8ust"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.7,
+        "acidity": 5.0,
+        "body": 2.5,
+        "sweetness": 3.7,
+        "aftertaste": 4.1,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W06",
+      "name": "과테말라 Rosma",
+      "farm": "Rosma",
+      "farmer": "Alejandro Morales de la Peña",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Pedro Necta",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 88.76,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 31.5,
+        "weightLb": 639.9,
+        "totalValueUsd": 20156.85,
+        "buyers": [
+          "GESHARY COFFEE"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 5.0,
+        "body": 2.9,
+        "sweetness": 3.4,
+        "aftertaste": 4.1,
+        "balance": 4.2
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W07",
+      "name": "과테말라 Villaure",
+      "farm": "Villaure",
+      "farmer": "Villatoro Castillo, Aurelio",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 88.16,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 30.2,
+        "weightLb": 619.6,
+        "totalValueUsd": 18711.92,
+        "buyers": [
+          "Brew92 Cafe & Roastery"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.5,
+        "acidity": 5.0,
+        "body": 2.8,
+        "sweetness": 3.4,
+        "aftertaste": 4.2,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W08",
+      "name": "과테말라 Vista Hermosa",
+      "farm": "Vista Hermosa",
+      "farmer": "Hernandez Lucas, Edgar Orlando",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.79,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 30.23,
+        "weightLb": 560.8,
+        "totalValueUsd": 16952.98,
+        "buyers": [
+          "Linking Coffee Co., Ltd.",
+          "Le BoBo Coffee",
+          "Ten Past Ten",
+          "Brave Roasters",
+          "Saerin (MOGIPOGROUND)"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.3,
+        "acidity": 5.0,
+        "body": 2.6,
+        "sweetness": 3.2,
+        "aftertaste": 3.9,
+        "balance": 4.2
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W09",
+      "name": "과테말라 Plan De La Vega",
+      "farm": "Plan De La Vega",
+      "farmer": "Argueta Herrera, Erwin Humberto",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Unión Cantinil",
+      "year": 2025,
+      "award": "COE",
+      "rank": 9,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.66,
+      "varieties": [
+        "Maragogype"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 21.1,
+        "weightLb": 542.6,
+        "totalValueUsd": 11448.86,
+        "buyers": [
+          "Angelino's Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.6,
+        "acidity": 4.4,
+        "body": 3.4,
+        "sweetness": 3.2,
+        "aftertaste": 3.3,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25W10",
+      "name": "과테말라 La Peña",
+      "farm": "La Peña",
+      "farmer": "Calderon Neutze, Jose Eduardo",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Palencia",
+      "year": 2025,
+      "award": "COE",
+      "rank": 10,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.5,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 19.2,
+        "weightLb": 918.8,
+        "totalValueUsd": 17640.96,
+        "buyers": [
+          "Terarosa (Haksan Co. Ltd)"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 3.6,
+        "acidity": 4.5,
+        "body": 3.6,
+        "sweetness": 3.4,
+        "aftertaste": 3.9,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "라임",
+        "허브",
+        "다크초콜릿",
+        "캐러멜"
+      ]
+    },
+    {
+      "id": "GT25W11",
+      "name": "과테말라 Sierra Roja",
+      "farm": "Sierra Roja",
+      "farmer": "Castillo Castellanos, Lorena",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Cristobal Acasaguastlán",
+      "year": 2025,
+      "award": "COE",
+      "rank": 11,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.5,
+      "varieties": [
+        "Geisha",
+        "Villa Sarchi"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 15.2,
+        "weightLb": 1035.4,
+        "totalValueUsd": 15738.08,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 5.0,
+        "body": 2.5,
+        "sweetness": 3.3,
+        "aftertaste": 3.8,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25W12",
+      "name": "과테말라 Guatalon",
+      "farm": "Guatalon",
+      "farmer": "Juarez Solares, Guillermo Antonio",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Santa Rosa de Lima",
+      "year": 2025,
+      "award": "COE",
+      "rank": 12,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.44,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 17.5,
+        "weightLb": 674.4,
+        "totalValueUsd": 11802.0,
+        "buyers": [
+          "CAMEL COFFEE CO.,LTD. (KALDI COFFEE FARM)"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.7,
+        "acidity": 4.4,
+        "body": 3.9,
+        "sweetness": 3.1,
+        "aftertaste": 3.6,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "라임",
+        "허브",
+        "다크초콜릿",
+        "캐러멜"
+      ]
+    },
+    {
+      "id": "GT25N01",
+      "name": "과테말라 Las Macadamias",
+      "farm": "Las Macadamias",
+      "farmer": "Las Macadamias, Sociedad Anonima",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "La Libertad",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 91.04,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 117.4,
+        "weightLb": 280.4,
+        "totalValueUsd": 32918.96,
+        "buyers": [
+          "MOMOS COFFEE",
+          "MALIC COFFEE",
+          "DEEPBLUELAKE",
+          "Always Au8ust"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.6,
+        "body": 3.8,
+        "sweetness": 4.6,
+        "aftertaste": 4.9,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "GT25N02",
+      "name": "과테말라 Morelia",
+      "farm": "Morelia",
+      "farmer": "Jose Roberto Monterroso Pineda",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Nueva Santa Rosa",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 90.53,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 38.1,
+        "weightLb": 724.1,
+        "totalValueUsd": 27588.21,
+        "buyers": [
+          "Sulalat"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.6,
+        "body": 3.6,
+        "sweetness": 4.8,
+        "aftertaste": 4.3,
+        "balance": 4.3
+      },
+      "flavorNotes": [
+        "살구",
+        "꿀",
+        "장미",
+        "백포도"
+      ]
+    },
+    {
+      "id": "GT25N03",
+      "name": "과테말라 Los Jutes",
+      "farm": "Los Jutes",
+      "farmer": "Anabella Meneses Hernández",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Acatenango",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 89.25,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 38.1,
+        "weightLb": 596.3,
+        "totalValueUsd": 22719.03,
+        "buyers": [
+          "Sulalat"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.8,
+        "acidity": 4.3,
+        "body": 3.7,
+        "sweetness": 5.0,
+        "aftertaste": 4.5,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "GT25N04",
+      "name": "과테말라 La Cookies",
+      "farm": "La Cookies",
+      "farmer": "Perez Rios, Max Fernando",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Acatenango",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 89.21,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 32.1,
+        "weightLb": 477.6,
+        "totalValueUsd": 15330.96,
+        "buyers": [
+          "ORO ROASTERS"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.1,
+        "body": 4.0,
+        "sweetness": 4.5,
+        "aftertaste": 4.3,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "GT25N05",
+      "name": "과테말라 Bella Vista",
+      "farm": "Bella Vista",
+      "farmer": "Castillo Villatoro, Arcenio",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 88.79,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 25.4,
+        "weightLb": 601.4,
+        "totalValueUsd": 15275.56,
+        "buyers": [
+          "Brew92 Cafe & Roastery"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.3,
+        "body": 3.6,
+        "sweetness": 4.8,
+        "aftertaste": 4.5,
+        "balance": 3.8
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "GT25N06",
+      "name": "과테말라 La Florida",
+      "farm": "La Florida",
+      "farmer": "Teodoro Engelhardt",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Cristobal Acasaguastlán",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 88.62,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 19.7,
+        "weightLb": 685.5,
+        "totalValueUsd": 13504.35,
+        "buyers": [
+          "Cultivar Coffee Roasting Co.",
+          "MayForest"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.3,
+        "acidity": 3.9,
+        "body": 5.0,
+        "sweetness": 4.9,
+        "aftertaste": 4.3,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "블랙베리",
+        "카카오닙스",
+        "럼",
+        "건과일"
+      ]
+    },
+    {
+      "id": "GT25N07",
+      "name": "과테말라 Pampojila Y Anexos",
+      "farm": "Pampojila Y Anexos",
+      "farmer": "Edgard Murelles Orellana",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Lucas Tolimán",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 88.46,
+      "varieties": [
+        "Ruiru-11"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 17.7,
+        "weightLb": 1086.1,
+        "totalValueUsd": 19223.97,
+        "buyers": [
+          "Young-In Traders Pte Ltd"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.8,
+        "acidity": 3.3,
+        "body": 4.3,
+        "sweetness": 4.8,
+        "aftertaste": 4.0,
+        "balance": 3.6
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "GT25N08",
+      "name": "과테말라 San Patricio El Limon",
+      "farm": "San Patricio El Limon",
+      "farmer": "Reyes Aguilar, Guadalupe Alberto",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Palencia",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 88.38,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 16.6,
+        "weightLb": 1197.7,
+        "totalValueUsd": 19881.82,
+        "buyers": [
+          "honu 加藤珈琲店"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.2,
+        "acidity": 3.8,
+        "body": 4.9,
+        "sweetness": 4.4,
+        "aftertaste": 4.4,
+        "balance": 3.5
+      },
+      "flavorNotes": [
+        "블랙베리",
+        "카카오닙스",
+        "럼",
+        "건과일"
+      ]
+    },
+    {
+      "id": "GT25N09",
+      "name": "과테말라 San Isidro Chacaya",
+      "farm": "San Isidro Chacaya",
+      "farmer": "San Isidro Chacaya, S. A.",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Santiago Atitlán",
+      "year": 2025,
+      "award": "COE",
+      "rank": 9,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 87.99,
+      "varieties": [
+        "Pacamara",
+        "Pacamara Amarillo"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 17.4,
+        "weightLb": 683.5,
+        "totalValueUsd": 11892.9,
+        "buyers": [
+          "List + Beisler GmbH"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.4,
+        "body": 5.0,
+        "sweetness": 4.4,
+        "aftertaste": 4.3,
+        "balance": 3.3
+      },
+      "flavorNotes": [
+        "블랙베리",
+        "카카오닙스",
+        "럼",
+        "건과일"
+      ]
+    },
+    {
+      "id": "GT25N10",
+      "name": "과테말라 La Bolsa",
+      "farm": "La Bolsa",
+      "farmer": "Maria Elena Vides",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "La Libertad",
+      "year": 2025,
+      "award": "COE",
+      "rank": 10,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 87.75,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 17.0,
+        "weightLb": 604.4,
+        "totalValueUsd": 10274.8,
+        "buyers": [
+          "Taiwan Coffee Development Association",
+          "Taisugar",
+          "Taiwan Coffee Laboratory"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 3.5,
+        "body": 5.0,
+        "sweetness": 4.7,
+        "aftertaste": 3.8,
+        "balance": 3.3
+      },
+      "flavorNotes": [
+        "블랙베리",
+        "카카오닙스",
+        "럼",
+        "건과일"
+      ]
+    },
+    {
+      "id": "GT25O01",
+      "name": "과테말라 El Nazareno",
+      "farm": "El Nazareno",
+      "farmer": "Anzueto Sandoval, Alfonso Augusto",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Huehuetenango",
+      "year": 2025,
+      "award": "COE",
+      "rank": 1,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 89.26,
+      "varieties": [
+        "Bourbon",
+        "Caturra",
+        "Catuai Amarillo",
+        "Typica",
+        "H1",
+        "Parainema"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 18.2,
+        "weightLb": 375.7,
+        "totalValueUsd": 6837.74,
+        "buyers": [
+          "WOLF ROASTERY"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.1,
+        "acidity": 3.6,
+        "body": 4.5,
+        "sweetness": 5.0,
+        "aftertaste": 4.5,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "GT25O02",
+      "name": "과테말라 Bella Elizabeth",
+      "farm": "Bella Elizabeth",
+      "farmer": "Argueta Herrera, Erwin Humberto",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Pedro Necta",
+      "year": 2025,
+      "award": "COE",
+      "rank": 2,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 89.09,
+      "varieties": [
+        "Bourbon",
+        "Caturra"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 17.2,
+        "weightLb": 567.9,
+        "totalValueUsd": 9767.88,
+        "buyers": [
+          "Idle Hands Roasting Co.",
+          "Pedestrian Coffee",
+          "RYANS COFFEE ROASTERS",
+          "Snowbeans Coffee",
+          "Songdo Coffee"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 4.8,
+        "body": 3.5,
+        "sweetness": 3.6,
+        "aftertaste": 3.6,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25O03",
+      "name": "과테말라 Granito De Oro",
+      "farm": "Granito De Oro",
+      "farmer": "Arcenio Castillo Villatoro",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "COE",
+      "rank": 3,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 89.06,
+      "varieties": [
+        "Bourbon Amarillo",
+        "Catuaí Amarillo"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 18.42,
+        "weightLb": 1065.8,
+        "totalValueUsd": 19632.04,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.7,
+        "acidity": 4.6,
+        "body": 3.5,
+        "sweetness": 4.0,
+        "aftertaste": 3.6,
+        "balance": 4.8
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25O04",
+      "name": "과테말라 El Vergel",
+      "farm": "El Vergel",
+      "farmer": "Marco Vinicio Ramirez Mejicanos",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Rafael Pie de la Cuesta",
+      "year": 2025,
+      "award": "COE",
+      "rank": 4,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 87.65,
+      "varieties": [
+        "Bourbon",
+        "Catuaí",
+        "Anacafé 14"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 16.4,
+        "weightLb": 673.4,
+        "totalValueUsd": 11043.76,
+        "buyers": [
+          "Sulalat"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 3.7,
+        "body": 4.1,
+        "sweetness": 4.8,
+        "aftertaste": 3.8,
+        "balance": 4.3
+      },
+      "flavorNotes": [
+        "딸기잼",
+        "다크초콜릿",
+        "건자두",
+        "견과"
+      ]
+    },
+    {
+      "id": "GT25O05",
+      "name": "과테말라 Los Arroyos",
+      "farm": "Los Arroyos",
+      "farmer": "Martinez Lopez, Felipe Venancio",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "La Libertad",
+      "year": 2025,
+      "award": "COE",
+      "rank": 5,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 87.56,
+      "varieties": [
+        "Bourbon Amarillo"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 17.2,
+        "weightLb": 565.9,
+        "totalValueUsd": 9733.48,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.4,
+        "acidity": 4.4,
+        "body": 3.5,
+        "sweetness": 3.3,
+        "aftertaste": 3.7,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25O06",
+      "name": "과테말라 La Tormenta",
+      "farm": "La Tormenta",
+      "farmer": "Roberto Chéves",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Agustín Acasaguastlán",
+      "year": 2025,
+      "award": "COE",
+      "rank": 6,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 87.47,
+      "varieties": [
+        "Villa Sarchi"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 15.7,
+        "weightLb": 595.3,
+        "totalValueUsd": 9346.21,
+        "buyers": [
+          "Wataru for Voila Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.0,
+        "acidity": 4.3,
+        "body": 3.7,
+        "sweetness": 4.1,
+        "aftertaste": 4.0,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "꿀",
+        "황설탕",
+        "붉은사과",
+        "건포도"
+      ]
+    },
+    {
+      "id": "GT25O07",
+      "name": "과테말라 Granja El Tempixque",
+      "farm": "Granja El Tempixque",
+      "farmer": "Sebastian Falla",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Miguel Dueñas",
+      "year": 2025,
+      "award": "COE",
+      "rank": 7,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 87.34,
+      "varieties": [
+        "Catuaí"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 16.5,
+        "weightLb": 707.9,
+        "totalValueUsd": 11680.35,
+        "buyers": [
+          "Prodigal Coffee"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.7,
+        "acidity": 4.3,
+        "body": 3.4,
+        "sweetness": 3.6,
+        "aftertaste": 3.3,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25O08",
+      "name": "과테말라 El Diamante",
+      "farm": "El Diamante",
+      "farmer": "Aurelio Villatoro",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "COE",
+      "rank": 8,
+      "category": "One Of A Kind",
+      "categoryKo": "원 오브 어 카인드",
+      "score": 87.21,
+      "varieties": [
+        "Bourbon"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 16.5,
+        "weightLb": 596.3,
+        "totalValueUsd": 9838.95,
+        "buyers": [
+          "El Gran Cafe, S.A."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.5,
+        "acidity": 4.4,
+        "body": 3.3,
+        "sweetness": 3.8,
+        "aftertaste": 3.4,
+        "balance": 4.4
+      },
+      "flavorNotes": [
+        "오렌지",
+        "사과",
+        "캐러멜",
+        "아몬드"
+      ]
+    },
+    {
+      "id": "GT25NW01",
+      "name": "과테말라 San Rafael",
+      "farm": "San Rafael",
+      "farmer": "Martinez Villatoro, Gerson Adoni",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Cuilco",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 87.53,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 5.12,
+        "weightLb": 736.2,
+        "totalValueUsd": 3769.34,
+        "buyers": [
+          "Ryans Coffee Roasters"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 4.6,
+        "acidity": 4.4,
+        "body": 3.2,
+        "sweetness": 4.3,
+        "aftertaste": 4.1,
+        "balance": 4.0
+      },
+      "flavorNotes": [
+        "살구",
+        "꿀",
+        "장미",
+        "백포도"
+      ]
+    },
+    {
+      "id": "GT25NW02",
+      "name": "과테말라 El Hermoso",
+      "farm": "El Hermoso",
+      "farmer": "Finca La Hermosa, S. A.",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Acatenango",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 87.41,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "natural",
+      "processKo": "내추럴",
+      "auction": {
+        "bidPerLb": 5.08,
+        "weightLb": 556.7,
+        "totalValueUsd": 2828.04,
+        "buyers": [
+          "COFFEE COUNTY"
+        ],
+        "hasKoreanBuyer": true
+      },
+      "sensory": {
+        "aroma": 5.0,
+        "acidity": 4.2,
+        "body": 4.0,
+        "sweetness": 4.3,
+        "aftertaste": 4.5,
+        "balance": 3.7
+      },
+      "flavorNotes": [
+        "딸기",
+        "열대과일",
+        "레드와인",
+        "꽃향"
+      ]
+    },
+    {
+      "id": "GT25NW03",
+      "name": "과테말라 San Andres",
+      "farm": "San Andres",
+      "farmer": "Recinos Sagastume, Jesus Andres",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "Moyuta",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Exotic Natural & Honey",
+      "categoryKo": "이그조틱 내추럴·허니",
+      "score": 86.93,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "honey",
+      "processKo": "허니",
+      "auction": {
+        "bidPerLb": 4.03,
+        "weightLb": 644.0,
+        "totalValueUsd": 2595.32,
+        "buyers": [
+          "Savaya Coffee LLC"
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.4,
+        "acidity": 4.6,
+        "body": 3.1,
+        "sweetness": 4.5,
+        "aftertaste": 4.2,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "살구",
+        "꿀",
+        "장미",
+        "백포도"
+      ]
+    },
+    {
+      "id": "GT25NW04",
+      "name": "과테말라 La Esperanza",
+      "farm": "La Esperanza",
+      "farmer": "Villatoro Castillo, Pedro",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "La Libertad",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 87.35,
+      "varieties": [
+        "Geisha"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 13.1,
+        "weightLb": 713.9,
+        "totalValueUsd": 9352.09,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 4.0,
+        "acidity": 4.9,
+        "body": 2.8,
+        "sweetness": 3.4,
+        "aftertaste": 3.5,
+        "balance": 4.1
+      },
+      "flavorNotes": [
+        "자스민",
+        "베르가못",
+        "복숭아",
+        "홍차"
+      ]
+    },
+    {
+      "id": "GT25NW05",
+      "name": "과테말라 La Colina",
+      "farm": "La Colina",
+      "farmer": "Medina Garcia, Emilio Antonio",
+      "country": "Guatemala",
+      "countryKo": "과테말라",
+      "region": "San Martín Jilotepéque",
+      "year": 2025,
+      "award": "NW",
+      "rank": null,
+      "category": "Exotic Washed",
+      "categoryKo": "이그조틱 워시드",
+      "score": 86.88,
+      "varieties": [
+        "Pacamara"
+      ],
+      "process": "washed",
+      "processKo": "워시드",
+      "auction": {
+        "bidPerLb": 8.13,
+        "weightLb": 648.0,
+        "totalValueUsd": 5268.24,
+        "buyers": [
+          "Wataru & Co., Ltd."
+        ],
+        "hasKoreanBuyer": false
+      },
+      "sensory": {
+        "aroma": 3.9,
+        "acidity": 4.5,
+        "body": 3.6,
+        "sweetness": 3.4,
+        "aftertaste": 3.6,
+        "balance": 3.9
+      },
+      "flavorNotes": [
+        "라임",
+        "허브",
+        "다크초콜릿",
+        "캐러멜"
+      ]
+    }
+  ]
+}
