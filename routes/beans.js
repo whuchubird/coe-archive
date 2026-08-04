@@ -22,6 +22,8 @@ const DEFAULT_SORT = 'score';
 const DEFAULT_DIRECTION = 'desc';
 const DEFAULT_LIMIT = 12;
 const MAX_LIMIT = 100;
+// 74건짜리 데이터에서 이보다 큰 페이지 번호는 의미가 없다. OFFSET 폭주를 막는 상한.
+const MAX_PAGE = 1_000_000;
 
 // 감각 슬라이더 3종. 쿼리 파라미터 이름과 sensory 컬럼을 짝지어 둔다.
 const SENSORY_FILTERS = {
@@ -131,8 +133,10 @@ export function buildOrderClause(sort, order) {
 }
 
 // page·limit을 정수로 바꾸고 범위를 제한한다. limit이 커지면 한 번에 전체를 긁어갈 수 있어 상한을 둔다.
+// page에도 상한이 필요하다. page가 지나치게 크면 OFFSET이 PostgreSQL의 bigint 범위를 넘어
+// 쿼리 자체가 실패한다 — 사용자 입력 때문에 서버 오류가 나는 셈이라 미리 잘라낸다.
 function buildPagination(query) {
-  const page = Math.max(1, Math.trunc(parseNumber(query.page) ?? 1));
+  const page = Math.min(MAX_PAGE, Math.max(1, Math.trunc(parseNumber(query.page) ?? 1)));
   const requested = Math.trunc(parseNumber(query.limit) ?? DEFAULT_LIMIT);
   const limit = Math.min(MAX_LIMIT, Math.max(1, requested));
   return { page, limit, offset: (page - 1) * limit };
@@ -282,31 +286,40 @@ router.get('/:id', async (req, res) => {
 
 // 유사 로트 3건. 감각 6축을 좌표로 보고 유클리드 거리가 가까운 순으로 고른다.
 // 거리 계산도 SQL에서 끝내므로 전체 로트를 가져와 JS에서 비교하지 않는다.
+// 없는 로트에 빈 배열을 돌려주면 /api/beans/:id가 404를 주는 것과 어긋난다.
+// 존재 확인과 유사 로트 조회는 서로를 기다릴 이유가 없어 동시에 보낸다.
 router.get('/:id/similar', async (req, res) => {
-  const { rows } = await pool.query(
-    `WITH target AS (
-       SELECT * FROM sensory WHERE bean_id = $1
-     )
-     SELECT
-       b.id, b.farm, b.country_ko, b.award, b.rank,
-       b.score::float8      AS score,
-       b.bid_per_lb::float8 AS bid_per_lb,
-       p.name_ko            AS process_name_ko,
-       sqrt(
-         power(s.aroma      - t.aroma, 2)      + power(s.acidity - t.acidity, 2) +
-         power(s.body       - t.body, 2)       + power(s.sweetness - t.sweetness, 2) +
-         power(s.aftertaste - t.aftertaste, 2) + power(s.balance - t.balance, 2)
-       )::float8 AS distance
-     FROM beans b
-     JOIN sensory s ON s.bean_id = b.id
-     JOIN processes p ON p.key = b.process_key
-     CROSS JOIN target t
-     WHERE b.id <> $1
-     ORDER BY distance ASC, b.id ASC
-     LIMIT 3`,
-    [req.params.id]
-  );
-  res.json(rows);
+  const [exists, similar] = await Promise.all([
+    pool.query('SELECT 1 FROM beans WHERE id = $1', [req.params.id]),
+    pool.query(
+      `WITH target AS (
+         SELECT * FROM sensory WHERE bean_id = $1
+       )
+       SELECT
+         b.id, b.farm, b.country_ko, b.award, b.rank,
+         b.score::float8      AS score,
+         b.bid_per_lb::float8 AS bid_per_lb,
+         p.name_ko            AS process_name_ko,
+         sqrt(
+           power(s.aroma      - t.aroma, 2)      + power(s.acidity - t.acidity, 2) +
+           power(s.body       - t.body, 2)       + power(s.sweetness - t.sweetness, 2) +
+           power(s.aftertaste - t.aftertaste, 2) + power(s.balance - t.balance, 2)
+         )::float8 AS distance
+       FROM beans b
+       JOIN sensory s ON s.bean_id = b.id
+       JOIN processes p ON p.key = b.process_key
+       CROSS JOIN target t
+       WHERE b.id <> $1
+       ORDER BY distance ASC, b.id ASC
+       LIMIT 3`,
+      [req.params.id]
+    )
+  ]);
+
+  if (exists.rowCount === 0) {
+    return res.status(404).json({ error: '해당 로트를 찾을 수 없습니다.' });
+  }
+  res.json(similar.rows);
 });
 
 // 가공방식 5종. 가이드 페이지의 비교표와 아코디언이 이 값을 그대로 쓴다.

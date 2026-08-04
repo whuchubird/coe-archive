@@ -158,3 +158,9 @@ CREATE INDEX idx_beans_country ON beans (country);
 
 -- 내 노트 목록: user_id로 거르고 최신순 정렬. 두 컬럼을 한 인덱스로 함께 처리한다.
 CREATE INDEX idx_notes_user_created ON notes (user_id, created_at DESC);
+
+-- 아이디는 대소문자를 구분하지 않는다. 'coe'로 가입했으면 'COE'로는 가입할 수 없다.
+-- users.username의 UNIQUE 제약은 글자가 정확히 같을 때만 막아 주므로,
+-- 소문자로 바꾼 값에 유일 인덱스를 하나 더 걸어 DB가 판정하게 한다.
+-- 로그인의 WHERE lower(username) = lower($1)도 이 인덱스를 그대로 쓴다.
+CREATE UNIQUE INDEX idx_users_username_lower ON users (lower(username));

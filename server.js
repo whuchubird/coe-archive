@@ -6,6 +6,10 @@ import express from 'express';
 import session from 'express-session';
 import { testConnection, closePool } from './db/pool.js';
 import beansRouter, { processesRouter } from './routes/beans.js';
+import authRouter from './routes/auth.js';
+import notesRouter from './routes/notes.js';
+import favoritesRouter from './routes/favorites.js';
+import statsRouter from './routes/stats.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -23,8 +27,30 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
+// public/ 아래 HTML·CSS·JS를 그대로 내보낸다.
+// 세션·본문 파싱보다 먼저 둔다. 정적 파일에는 세션이 필요 없는데,
+// 뒤에 두면 CSS·JS 요청 하나마다 세션 저장소를 한 번씩 들여다보게 된다.
+app.use(express.static(path.join(__dirname, 'public')));
+
 // 요청 본문 JSON 파싱. 폼은 전부 fetch로 JSON을 보낸다.
 app.use(express.json());
+
+// CSRF 방어 보강. 브라우저는 다른 사이트에서 시작된 요청에 Origin 헤더를 붙인다.
+// Origin이 있는데 이 서버가 아니라면 남의 페이지가 시킨 요청이므로 막는다.
+// curl처럼 Origin을 아예 보내지 않는 클라이언트는 그대로 통과시켜 테스트 스크립트를 깨뜨리지 않는다.
+// (sameSite: 'lax' 쿠키가 1차 방어이고 이건 2차 방어다)
+const STATE_CHANGING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
+
+app.use((req, res, next) => {
+  if (!STATE_CHANGING_METHODS.has(req.method)) return next();
+
+  const origin = req.get('origin');
+  if (!origin) return next();
+
+  if (origin === `${req.protocol}://${req.get('host')}`) return next();
+
+  res.status(403).json({ error: '허용되지 않은 출처의 요청입니다.' });
+});
 
 // 세션: 쿠키에는 세션 ID만 담고 로그인 정보는 서버가 들고 있는다.
 app.use(session({
@@ -39,24 +65,17 @@ app.use(session({
   }
 }));
 
-// public/ 아래 HTML·CSS·JS를 그대로 내보낸다.
-app.use(express.static(path.join(__dirname, 'public')));
-
 // --- API 라우터 마운트 ---------------------------------------------
 app.use('/api/beans', beansRouter);
 // 가공방식 목록은 경로가 /api/beans 아래가 아니라 별도라 따로 붙인다.
 app.use('/api/processes', processesRouter);
 
-// 나머지 라우터 파일을 만들면 아래 주석을 푼다. import는 파일 상단으로 옮긴다.
-// import authRouter from './routes/auth.js';
-// import notesRouter from './routes/notes.js';
-// import favoritesRouter from './routes/favorites.js';
-// import statsRouter from './routes/stats.js';
-//
-// app.use('/api/auth', authRouter);
-// app.use('/api/notes', notesRouter);
-// app.use('/api/favorites', favoritesRouter);
-// app.use('/api/stats', statsRouter);
+app.use('/api/auth', authRouter);
+// notes·favorites는 라우터 안에서 requireAuth를 먼저 통과시킨다.
+app.use('/api/notes', notesRouter);
+app.use('/api/favorites', favoritesRouter);
+// 통계는 /my만 로그인이 필요해 라우터 안에서 해당 경로에만 requireAuth를 건다.
+app.use('/api/stats', statsRouter);
 // -------------------------------------------------------------------
 
 // 정적 파일도 라우터도 처리하지 못한 요청.
@@ -65,10 +84,24 @@ app.use((req, res) => {
 });
 
 // 에러 핸들러는 인자가 4개여야 Express가 알아본다.
+// 4xx는 요청이 잘못된 것이고 5xx는 서버 문제다. 원인이 다른데 같은 문구를 내보내면
+// 클라이언트가 자기 잘못을 서버 탓으로 오해한다.
 app.use((err, req, res, _next) => {
-  console.error('[error]', err);
-  // 내부 오류 내용은 클라이언트에 노출하지 않는다.
-  res.status(err.status || 500).json({ error: '서버 오류가 발생했습니다.' });
+  // JSON 파싱 실패처럼 미들웨어가 던진 에러는 상태 코드를 직접 들고 온다.
+  const status = err.status ?? err.statusCode ?? 500;
+
+  if (status >= 500) {
+    console.error('[error]', err);
+    // 내부 오류 내용은 클라이언트에 노출하지 않는다.
+    return res.status(status).json({ error: '서버 오류가 발생했습니다.' });
+  }
+
+  // 잘못된 요청은 서버 장애가 아니므로 스택까지 남기지 않는다.
+  console.warn(`[${status}] ${req.method} ${req.originalUrl} — ${err.message}`);
+  const message = err.type === 'entity.too.large'
+    ? '요청 본문이 너무 큽니다.'
+    : '요청 형식이 올바르지 않습니다.';
+  res.status(status).json({ error: message });
 });
 
 // DB에 실제로 닿는지 먼저 확인하고 서버를 띄운다.
