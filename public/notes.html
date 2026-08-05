@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>나의 테이스팅 노트 — COE ARCHIVE</title>
+
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('coe-theme');
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || systemTheme;
+    } catch {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/page.css">
+</head>
+<body data-auth="unknown">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="brand" href="/index.html">COE <span class="brand__mark">ARCHIVE</span></a>
+
+      <nav aria-label="주요 메뉴">
+        <ul class="nav" role="list">
+          <li><a class="nav__link" href="/beans.html">아카이브</a></li>
+          <li><a class="nav__link" href="/stats.html">통계</a></li>
+          <li><a class="nav__link" href="/guide.html">가공방식</a></li>
+          <li><a class="nav__link" href="/brew.html">추출 계산기</a></li>
+          <li class="auth-only"><a class="nav__link" href="/notes.html">내 노트</a></li>
+          <li class="guest-only"><a class="nav__link" href="/login.html">로그인</a></li>
+          <li class="auth-only"><span class="nav__user" data-user-name></span></li>
+          <li class="auth-only"><button class="btn btn--sm btn--ghost" type="button" data-logout>로그아웃</button></li>
+        </ul>
+      </nav>
+
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="다크 모드로 전환">☾</button>
+    </div>
+  </header>
+
+  <main id="main" class="page container">
+    <div class="section__head">
+      <h1 class="serif">Tasting notes</h1>
+      <p class="muted">마신 로트를 기록하고 다시 찾아봅니다.</p>
+    </div>
+
+    <div class="notes-layout">
+
+      <!-- ── 작성 폼 ──────────────────────────────────────── -->
+      <section class="panel" aria-labelledby="write-title">
+        <h2 id="write-title" class="panel__title">노트 작성</h2>
+
+        <form class="note-form" data-form="create" novalidate>
+          <div class="field">
+            <label class="field__label" for="create-bean">로트</label>
+            <select class="select" id="create-bean" name="bean_id" required>
+              <option value="">불러오는 중…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="create-brew">추출 방식</label>
+            <input class="input" type="text" id="create-brew" name="brew_method"
+                   maxlength="50" placeholder="V60 · 에어로프레스 · 프렌치프레스" autocomplete="off">
+          </div>
+
+          <fieldset class="rating" data-rating>
+            <legend class="field__label">별점</legend>
+            <!-- 별점 라디오는 JS가 만든다. 수정 폼과 같은 구조를 두 번 적지 않기 위해서다. -->
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend class="field__label">감각 6축</legend>
+            <p class="muted filters__hint">기록하지 않으면 비워 두어도 됩니다.</p>
+            <div data-sensory></div>
+          </fieldset>
+
+          <div class="field">
+            <label class="field__label" for="create-comment">코멘트</label>
+            <textarea class="textarea" id="create-comment" name="comment"
+                      maxlength="500" placeholder="향, 첫 모금, 식은 뒤의 인상"></textarea>
+            <p class="muted char-count" data-count-for="create-comment">0 / 500</p>
+          </div>
+
+          <p class="form-error" data-error="create" role="alert" hidden></p>
+
+          <button class="btn btn--primary" type="submit">노트 저장</button>
+        </form>
+      </section>
+
+      <!-- ── 목록 ─────────────────────────────────────────── -->
+      <div class="notes-main">
+        <section class="section" aria-labelledby="list-title">
+          <div class="section__head">
+            <h2 id="list-title" class="serif">My notes</h2>
+            <p class="muted num" data-note-count aria-live="polite"></p>
+          </div>
+          <!-- 수정·삭제 버튼은 이벤트 위임으로 이 컨테이너 하나에서 받는다. -->
+          <div class="note-cards" data-note-list></div>
+        </section>
+
+        <section class="section" aria-labelledby="fav-title">
+          <div class="section__head">
+            <h2 id="fav-title" class="serif">Favorites</h2>
+            <p class="muted num" data-fav-count aria-live="polite"></p>
+          </div>
+          <div class="grid" data-fav-list></div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── 수정 모달 ──────────────────────────────────────────── -->
+  <dialog class="modal" data-edit-dialog aria-labelledby="edit-title">
+    <form class="note-form" data-form="edit" method="dialog" novalidate>
+      <h2 id="edit-title" class="panel__title">노트 수정</h2>
+
+      <div class="field">
+        <label class="field__label" for="edit-bean">로트</label>
+        <select class="select" id="edit-bean" name="bean_id" required></select>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="edit-brew">추출 방식</label>
+        <input class="input" type="text" id="edit-brew" name="brew_method" maxlength="50" autocomplete="off">
+      </div>
+
+      <fieldset class="rating" data-rating>
+        <legend class="field__label">별점</legend>
+      </fieldset>
+
+      <fieldset class="filters__group">
+        <legend class="field__label">감각 6축</legend>
+        <div data-sensory></div>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="edit-comment">코멘트</label>
+        <textarea class="textarea" id="edit-comment" name="comment" maxlength="500"></textarea>
+        <p class="muted char-count" data-count-for="edit-comment">0 / 500</p>
+      </div>
+
+      <p class="form-error" data-error="edit" role="alert" hidden></p>
+
+      <div class="modal__actions">
+        <button class="btn btn--ghost" type="button" data-close-edit>취소</button>
+        <button class="btn btn--primary" type="submit">저장</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ── 삭제 확인 모달 ─────────────────────────────────────── -->
+  <dialog class="modal modal--confirm" data-delete-dialog aria-labelledby="delete-title">
+    <h2 id="delete-title" class="panel__title">노트를 삭제할까요?</h2>
+    <p class="muted" data-delete-target></p>
+    <p class="muted">되돌릴 수 없습니다.</p>
+    <div class="modal__actions">
+      <button class="btn btn--ghost" type="button" data-cancel-delete>취소</button>
+      <button class="btn btn--danger" type="button" data-confirm-delete>삭제</button>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclaimer">
+        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며, 가공방식·품종·총점을 근거로 산출한 추정치입니다.
+      </p>
+      <p>출처 Alliance for Coffee Excellence (ACE) 공식 경쟁·경매 결과 · COE 2025 브라질·과테말라 74건</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/notes.js"></script>
+</body>
+</html>

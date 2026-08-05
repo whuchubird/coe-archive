@@ -83,12 +83,31 @@ app.use((req, res) => {
   res.status(404).json({ error: '요청한 경로를 찾을 수 없습니다.' });
 });
 
+// DB에 닿지 못해 생긴 오류인지 판단한다. 포트가 막혔거나 호스트가 응답하지 않는 경우다.
+const DB_UNREACHABLE_CODES = new Set([
+  'ETIMEDOUT', 'ECONNREFUSED', 'ENOTFOUND', 'EAI_AGAIN', 'ECONNRESET', 'EHOSTUNREACH'
+]);
+
+function isDatabaseUnreachable(err) {
+  if (DB_UNREACHABLE_CODES.has(err.code) || DB_UNREACHABLE_CODES.has(err.cause?.code)) return true;
+  return /connection timeout|Connection terminated/i.test(err.message ?? '');
+}
+
 // 에러 핸들러는 인자가 4개여야 Express가 알아본다.
 // 4xx는 요청이 잘못된 것이고 5xx는 서버 문제다. 원인이 다른데 같은 문구를 내보내면
 // 클라이언트가 자기 잘못을 서버 탓으로 오해한다.
 app.use((err, req, res, _next) => {
   // JSON 파싱 실패처럼 미들웨어가 던진 에러는 상태 코드를 직접 들고 온다.
   const status = err.status ?? err.statusCode ?? 500;
+
+  // DB에 닿지 못한 것은 서버 코드의 결함이 아니라 일시적인 상태다.
+  // 500 대신 503으로 답해 클라이언트가 "잠시 후 다시"를 판단할 수 있게 한다.
+  if (isDatabaseUnreachable(err)) {
+    console.error('[db]', err.message);
+    return res.status(503).json({
+      error: '데이터베이스에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.'
+    });
+  }
 
   if (status >= 500) {
     console.error('[error]', err);
@@ -104,13 +123,21 @@ app.use((err, req, res, _next) => {
   res.status(status).json({ error: message });
 });
 
-// DB에 실제로 닿는지 먼저 확인하고 서버를 띄운다.
-const info = await testConnection();
-console.log(`[db] 연결 확인 (${info.db}, ${info.now.toISOString()})`);
-
 const server = app.listen(PORT, () => {
   console.log(`[server] http://localhost:${PORT}`);
 });
+
+// DB 상태 확인은 서버 기동을 막지 않게 백그라운드에서 수행한다.
+// DB가 느리거나 잠깐 끊겨도 정적 페이지와 오류 안내는 즉시 열려야 한다.
+testConnection()
+  .then((info) => {
+    console.log(`[db] 연결 확인 (${info.db}, ${info.now.toISOString()})`);
+  })
+  .catch((err) => {
+    console.error('[db] 연결 실패 —', err.message);
+    console.error('[db] 정적 페이지는 그대로 열리고, API는 연결될 때까지 503을 돌려준다.');
+    console.error('[db] 5432가 막힌 네트워크라면 .env에 DB_DRIVER=neon을 넣어 443으로 붙일 수 있다.');
+  });
 
 // 종료 신호를 받으면 새 요청을 끊고 DB 풀까지 정리한다.
 for (const signal of ['SIGINT', 'SIGTERM']) {

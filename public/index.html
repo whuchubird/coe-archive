@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COE ARCHIVE — Cup of Excellence 2025 수상 로트</title>
+  <meta name="description" content="Cup of Excellence 2025 브라질·과테말라 수상 로트 74건의 점수·낙찰가·가공방식 아카이브.">
+
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('coe-theme');
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || systemTheme;
+    } catch {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/page.css">
+</head>
+<body data-auth="unknown">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="brand" href="/index.html">COE <span class="brand__mark">ARCHIVE</span></a>
+
+      <nav aria-label="주요 메뉴">
+        <ul class="nav" role="list">
+          <li><a class="nav__link" href="/beans.html">아카이브</a></li>
+          <li><a class="nav__link" href="/stats.html">통계</a></li>
+          <li><a class="nav__link" href="/guide.html">가공방식</a></li>
+          <li><a class="nav__link" href="/brew.html">추출 계산기</a></li>
+          <li class="auth-only"><a class="nav__link" href="/notes.html">내 노트</a></li>
+          <li class="guest-only"><a class="nav__link" href="/login.html">로그인</a></li>
+          <li class="auth-only"><span class="nav__user" data-user-name></span></li>
+          <li class="auth-only"><button class="btn btn--sm btn--ghost" type="button" data-logout>로그아웃</button></li>
+        </ul>
+      </nav>
+
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="다크 모드로 전환">☾</button>
+    </div>
+  </header>
+
+  <main id="main" class="page container">
+
+    <!-- 히어로: 2025년 최고 낙찰가 로트 -->
+    <section class="section hero" aria-labelledby="hero-title">
+      <p class="label">Cup of Excellence 2025 · 브라질 · 과테말라</p>
+      <h1 id="hero-title" class="serif hero__title">
+        생두 경매에서<br>가장 비싸게 팔린 커피
+      </h1>
+      <div class="hero__lot" data-hero-lot>
+        <div class="skeleton" aria-hidden="true"></div>
+      </div>
+      <dl class="hero__stats" data-overview></dl>
+    </section>
+
+    <!-- 추천 로트 캐러셀: 점수 상위 -->
+    <section class="section" aria-labelledby="featured-title">
+      <div class="section__head">
+        <h2 id="featured-title" class="serif">Highest scores</h2>
+        <a class="muted" href="/beans.html?sort=score&amp;order=desc">전체 아카이브 보기 →</a>
+      </div>
+      <div class="carousel" data-featured tabindex="0" role="region" aria-label="점수 상위 로트 가로 목록"></div>
+    </section>
+
+    <!-- 가공방식 5종 -->
+    <section class="section" aria-labelledby="process-title">
+      <div class="section__head">
+        <h2 id="process-title" class="serif">Processing</h2>
+        <a class="muted" href="/guide.html">가공방식 가이드 →</a>
+      </div>
+      <div class="process-grid" data-processes></div>
+    </section>
+
+    <!-- 로그인 시에만 보이는 최근 노트 -->
+    <section class="section auth-only" aria-labelledby="notes-title">
+      <div class="section__head">
+        <h2 id="notes-title" class="serif">Recent notes</h2>
+        <a class="muted" href="/notes.html">내 노트 전체 →</a>
+      </div>
+      <div data-recent-notes></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclaimer">
+        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며, 가공방식·품종·총점을 근거로 산출한 추정치입니다.
+      </p>
+      <p>출처 Alliance for Coffee Excellence (ACE) 공식 경쟁·경매 결과 · COE 2025 브라질·과테말라 74건</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/index.js"></script>
+</body>
+</html>

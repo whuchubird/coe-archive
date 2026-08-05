@@ -32,7 +32,7 @@ const SENSORY_FILTERS = {
   minSweetness: 's.sweetness'
 };
 
-// 목록·개수·facets가 모두 같은 조건을 봐야 하므로 FROM 절을 한 곳에 둔다.
+// 목록·개수·facets가 같은 기본 조인을 쓰므로 FROM 절을 한 곳에 둔다.
 // sensory는 1:1이라 LEFT JOIN해도 행이 늘지 않는다. 감각 최소값 필터가 여기에 걸린다.
 const FROM_BEANS = 'FROM beans b LEFT JOIN sensory s ON s.bean_id = b.id';
 
@@ -59,32 +59,39 @@ function escapeLike(value) {
 }
 
 // 쿼리스트링을 WHERE 조건 배열과 파라미터 배열로 바꾼다.
-// 값은 하나도 SQL 문자열에 섞지 않고 전부 $1, $2로 넘긴다.
-export function buildWhereClause(query) {
+// facet 계산에서는 자기 차원의 조건만 제외할 수 있고, UNION 안에서도 파라미터 번호가
+// 겹치지 않도록 시작 번호를 받을 수 있다. 값은 모두 파라미터로 넘긴다.
+export function buildWhereClause(query, { exclude = new Set(), parameterOffset = 0 } = {}) {
   const conditions = [];
   const params = [];
 
   // 파라미터를 추가하고 그 자리번호($n)를 돌려준다.
   const bind = (value) => {
     params.push(value);
-    return `$${params.length}`;
+    return `$${parameterOffset + params.length}`;
   };
 
   // 체크박스 필터 3종: 배열로 받아 = ANY로 한 번에 비교한다.
   const country = parseList(query.country);
-  if (country.length > 0) conditions.push(`b.country = ANY(${bind(country)}::text[])`);
+  if (!exclude.has('country') && country.length > 0) {
+    conditions.push(`b.country = ANY(${bind(country)}::text[])`);
+  }
 
   const award = parseList(query.award);
-  if (award.length > 0) conditions.push(`b.award = ANY(${bind(award)}::text[])`);
+  if (!exclude.has('award') && award.length > 0) {
+    conditions.push(`b.award = ANY(${bind(award)}::text[])`);
+  }
 
   const process = parseList(query.process);
-  if (process.length > 0) conditions.push(`b.process_key = ANY(${bind(process)}::text[])`);
+  if (!exclude.has('process') && process.length > 0) {
+    conditions.push(`b.process_key = ANY(${bind(process)}::text[])`);
+  }
 
   // 품종은 M:N이라 bean_varieties를 거쳐야 한다.
   // FROM에 직접 JOIN하면 품종이 여러 개인 로트가 중복 행으로 늘어나 COUNT와 LIMIT이 어긋난다.
   // EXISTS로 감싸면 "조건에 맞는 품종이 하나라도 있는가"만 보므로 행 수가 그대로 유지된다.
   const variety = parseList(query.variety);
-  if (variety.length > 0) {
+  if (!exclude.has('variety') && variety.length > 0) {
     conditions.push(`EXISTS (
       SELECT 1 FROM bean_varieties bv
       JOIN varieties v ON v.id = bv.variety_id
@@ -184,23 +191,41 @@ async function fetchTotal(where, params) {
   return rows[0].total;
 }
 
-// 현재 필터 조건에서 옵션별 건수를 센다. 체크박스 옆 숫자로 쓴다.
-// 세 축의 WHERE와 파라미터가 같으므로 UNION ALL로 묶어 한 번만 왕복한다.
-async function fetchFacets(where, params) {
+// 현재 필터 조건에서 옵션별 건수를 센다. 자기 차원의 조건은 제외해야
+// Brazil을 선택한 뒤에도 Guatemala 건수가 남아 두 국가를 함께 선택할 수 있다.
+// 각 SELECT의 파라미터 번호를 이어 붙여 UNION ALL 한 번으로 실행한다.
+async function fetchFacets(query) {
+  const params = [];
+
+  const facetSelect = (dimension, key, joins = '') => {
+    const { clause, params: facetParams } = buildWhereClause(query, {
+      exclude: new Set([dimension]),
+      parameterOffset: params.length
+    });
+    params.push(...facetParams);
+    return `SELECT '${dimension}' AS dimension, ${key} AS key, COUNT(*)::int AS count
+            ${FROM_BEANS} ${joins} ${clause} GROUP BY ${key}`;
+  };
+
+  const statements = [
+    facetSelect('process', 'b.process_key'),
+    facetSelect('country', 'b.country'),
+    facetSelect('award', 'b.award'),
+    // 품종은 M:N이라 연결 테이블을 거친다. 복합 PK 덕분에 같은 로트·품종은 한 번만 센다.
+    facetSelect(
+      'variety',
+      'v.name',
+      'JOIN bean_varieties bv ON bv.bean_id = b.id JOIN varieties v ON v.id = bv.variety_id'
+    )
+  ];
+
   const { rows } = await pool.query(
-    `SELECT 'process' AS dimension, b.process_key AS key, COUNT(*)::int AS count
-     ${FROM_BEANS} ${where} GROUP BY b.process_key
-     UNION ALL
-     SELECT 'country', b.country, COUNT(*)::int
-     ${FROM_BEANS} ${where} GROUP BY b.country
-     UNION ALL
-     SELECT 'award', b.award, COUNT(*)::int
-     ${FROM_BEANS} ${where} GROUP BY b.award`,
+    statements.join('\nUNION ALL\n'),
     params
   );
 
-  // { process: { natural: 25, ... }, country: {...}, award: {...} } 형태로 접어서 내려준다.
-  const facets = { process: {}, country: {}, award: {} };
+  // { process: { natural: 25, ... }, country: {...}, award: {...}, variety: {...} } 형태로 접어서 내려준다.
+  const facets = { process: {}, country: {}, award: {}, variety: {} };
   for (const row of rows) facets[row.dimension][row.key] = row.count;
   return facets;
 }
@@ -219,7 +244,7 @@ router.get('/', async (req, res) => {
   const [items, total, facets] = await Promise.all([
     fetchItems(clause, params, orderClause, limit, offset),
     fetchTotal(clause, params),
-    fetchFacets(clause, params)
+    fetchFacets(req.query)
   ]);
 
   res.json({

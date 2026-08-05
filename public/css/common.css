@@ -597,6 +597,10 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--alert);
 }
 
+.state .btn {
+  margin-top: var(--space-3);
+}
+
 /* 로딩 자리표시자. 내용이 들어올 자리의 높이를 미리 잡아 화면이 튀지 않게 한다. */
 .skeleton {
   height: 10rem;
@@ -610,6 +614,235 @@ a:hover { text-decoration-thickness: 2px; }
 @keyframes skeleton-slide {
   from { background-position: 200% 0; }
   to   { background-position: -200% 0; }
+}
+
+/* ── 10.5. 차트 (chart.js가 만드는 SVG) ──────────────────── */
+/* 색을 JS에 넣지 않고 여기서 토큰으로 칠한다. 그래야 다크 모드가 저절로 따라온다. */
+
+/* 가공방식 5종을 구분하는 범주형 색.
+   화면 UI에 쓰는 6색(--ink/--raw/--bid 등)은 5개를 구별하는 용도로 만들어진 게 아니라,
+   차트 계열색은 따로 둔다. 슬롯 순서는 가공방식 key에 고정돼 있어
+   필터로 개수가 줄어도 남은 항목의 색이 바뀌지 않는다.
+   두 모드 모두 색각 이상 시뮬레이션(protan/deutan/tritan)과
+   정상 시야 분리 기준을 통과하도록 계산해 고른 값이다. */
+:root {
+  --series-1: #D0126F;  /* 워시드 */
+  --series-2: #CB882E;  /* 허니 */
+  --series-3: #227702;  /* 펄프드 내추럴 */
+  --series-4: #51BCCE;  /* 내추럴 */
+  --series-5: #7472F4;  /* 실험적 가공 */
+}
+
+[data-theme='dark'] {
+  --series-1: #DE297B;
+  --series-2: #C17F21;
+  --series-3: #227702;
+  --series-4: #017E9A;
+  --series-5: #7C7BFF;
+}
+
+.radar {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 20rem;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+/* 배경 격자 5단계 */
+.radar__grid {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+/* 중심에서 꼭짓점으로 뻗는 축 */
+.radar__axis {
+  stroke: var(--line-firm);
+  stroke-width: 1;
+}
+
+/* 데이터 도형. 안쪽을 옅게 채우고 테두리를 뚜렷하게 둔다. */
+.radar__shape {
+  fill: var(--accent);
+  fill-opacity: 0.18;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.radar__dot {
+  fill: var(--accent);
+}
+
+.radar__label {
+  fill: var(--fg-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+}
+
+/* 값은 숫자라 모노스페이스로 */
+.radar__value {
+  fill: var(--fg);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* 범례 — 계열이 둘 이상이면 항상 붙는다. 색만으로 정체를 알게 두지 않는다. */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.chart-legend__mark {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.chart-legend__note {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.chart-note {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+/* 도넛 */
+.donut {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 15rem;
+  margin-inline: auto;
+}
+
+/* 조각 사이에 표면색 선을 둘러 경계가 색 대비에만 기대지 않게 한다. */
+.donut__slice {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+
+.donut__center {
+  fill: var(--fg);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* 가로 막대 */
+.bar-chart {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bar-chart__row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 4.5rem;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+/* 품종명이 길면 줄바꿈 대신 말줄임으로 처리해 행 높이를 지킨다. */
+.bar-chart__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-chart__track {
+  height: 12px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-chart__fill {
+  height: 100%;
+  background: var(--accent);
+  /* 값이 끝나는 쪽만 둥글게. 시작점은 축에 붙어 있어야 한다. */
+  border-radius: 0 4px 4px 0;
+}
+
+.bar-chart__value {
+  text-align: right;
+  font-size: var(--text-sm);
+}
+
+/* 산점도 */
+.scatter-frame {
+  position: relative;
+}
+
+.scatter {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scatter__gridline {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.scatter__tick {
+  fill: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+}
+
+.scatter__axis-title {
+  fill: var(--fg-muted);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.scatter__dot {
+  cursor: pointer;
+}
+
+.scatter__dot:hover,
+.scatter__dot:focus-visible {
+  stroke: var(--fg);
+  stroke-width: 2;
+  outline: none;
+}
+
+/* 툴팁 — 점 위에 떠서 값을 글로 알려준다. */
+.chart-tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 8px));
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-firm);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
 }
 
 /* ── 11. 접근성 ──────────────────────────────────────────── */

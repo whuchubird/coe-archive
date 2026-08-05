@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>아카이브 — COE ARCHIVE</title>
+  <meta name="description" content="COE 2025 수상 로트 74건을 국가·등급·가공방식·품종으로 거르고 점수·낙찰가로 정렬해 봅니다.">
+
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('coe-theme');
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || systemTheme;
+    } catch {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/page.css">
+</head>
+<body data-auth="unknown">
+  <a class="skip-link" href="#results">검색 결과로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="brand" href="/index.html">COE <span class="brand__mark">ARCHIVE</span></a>
+
+      <nav aria-label="주요 메뉴">
+        <ul class="nav" role="list">
+          <li><a class="nav__link" href="/beans.html">아카이브</a></li>
+          <li><a class="nav__link" href="/stats.html">통계</a></li>
+          <li><a class="nav__link" href="/guide.html">가공방식</a></li>
+          <li><a class="nav__link" href="/brew.html">추출 계산기</a></li>
+          <li class="auth-only"><a class="nav__link" href="/notes.html">내 노트</a></li>
+          <li class="guest-only"><a class="nav__link" href="/login.html">로그인</a></li>
+          <li class="auth-only"><span class="nav__user" data-user-name></span></li>
+          <li class="auth-only"><button class="btn btn--sm btn--ghost" type="button" data-logout>로그아웃</button></li>
+        </ul>
+      </nav>
+
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="다크 모드로 전환">☾</button>
+    </div>
+  </header>
+
+  <main id="main" class="page container">
+    <div class="section__head">
+      <h1 class="serif">Archive</h1>
+      <p class="muted">COE 2025 브라질·과테말라 수상 로트 74건</p>
+    </div>
+
+    <div class="archive">
+
+      <!-- ── 필터 ─────────────────────────────────────────── -->
+      <form class="filters" data-filters aria-label="로트 필터">
+        <div class="filters__head">
+          <h2 class="filters__title">필터</h2>
+          <button class="btn btn--sm btn--ghost" type="button" data-reset>전체 해제</button>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="filter-q">검색</label>
+          <input class="input" type="search" id="filter-q" name="q"
+                 placeholder="농장 · 생산자 · 지역 · 낙찰 업체" autocomplete="off">
+          <p class="muted filters__hint">입력을 멈추면 자동으로 검색합니다.</p>
+        </div>
+
+        <fieldset class="filters__group">
+          <legend class="field__label">국가</legend>
+          <div class="checks" data-facet="country"></div>
+        </fieldset>
+
+        <fieldset class="filters__group">
+          <legend class="field__label">등급</legend>
+          <div class="checks" data-facet="award"></div>
+        </fieldset>
+
+        <fieldset class="filters__group">
+          <legend class="field__label">가공방식</legend>
+          <div class="checks" data-facet="process"></div>
+        </fieldset>
+
+        <fieldset class="filters__group">
+          <legend class="field__label">품종</legend>
+          <div class="checks checks--scroll" data-facet="variety"></div>
+        </fieldset>
+
+        <fieldset class="filters__group">
+          <legend class="field__label">감각 최소값</legend>
+          <p class="muted filters__hint">추정치 기준입니다.</p>
+
+          <div class="range">
+            <label for="filter-acidity">산미</label>
+            <input type="range" id="filter-acidity" name="minAcidity"
+                   min="0" max="5" step="0.5" value="0">
+            <output class="num" data-output="minAcidity">0</output>
+          </div>
+
+          <div class="range">
+            <label for="filter-body">바디</label>
+            <input type="range" id="filter-body" name="minBody"
+                   min="0" max="5" step="0.5" value="0">
+            <output class="num" data-output="minBody">0</output>
+          </div>
+
+          <div class="range">
+            <label for="filter-sweetness">단맛</label>
+            <input type="range" id="filter-sweetness" name="minSweetness"
+                   min="0" max="5" step="0.5" value="0">
+            <output class="num" data-output="minSweetness">0</output>
+          </div>
+        </fieldset>
+      </form>
+
+      <!-- ── 결과 ─────────────────────────────────────────── -->
+      <section id="results" class="results" aria-labelledby="results-title">
+        <h2 id="results-title" class="visually-hidden">검색 결과</h2>
+
+        <div class="toolbar">
+          <p class="toolbar__count num" data-count aria-live="polite">불러오는 중…</p>
+
+          <div class="field toolbar__sort">
+            <label class="visually-hidden" for="filter-sort">정렬</label>
+            <select class="select" id="filter-sort" data-sort>
+              <option value="score:desc">점수 높은 순</option>
+              <option value="bid:desc">파운드당 낙찰가 높은 순</option>
+              <option value="value:desc">총 낙찰액 높은 순</option>
+              <option value="rank:asc">순위 순</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid" data-lot-grid></div>
+
+        <nav class="pagination" data-pagination aria-label="페이지 이동"></nav>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclaimer">
+        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며, 가공방식·품종·총점을 근거로 산출한 추정치입니다.
+      </p>
+      <p>출처 Alliance for Coffee Excellence (ACE) 공식 경쟁·경매 결과 · COE 2025 브라질·과테말라 74건</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/beans.js"></script>
+</body>
+</html>

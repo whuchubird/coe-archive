@@ -1,7 +1,7 @@
 // 모든 페이지가 공통으로 쓰는 동작.
 // 헤더 갱신·다크 모드·숫자 포맷·로딩과 에러 표시를 담당한다.
 // 페이지별 스크립트는 이 파일에서 필요한 것만 가져다 쓴다.
-import { api, ApiError } from './api.js';
+import { api, ApiError, buildQuery } from './api.js';
 
 // ============================================================
 // 다크 모드
@@ -193,6 +193,65 @@ export function createEl(tag, { className, text, attrs, children } = {}) {
 }
 
 // ============================================================
+// 로트 전표 카드
+// ============================================================
+
+// 카드 하나를 만들어 돌려준다.
+// index·beans·detail(유사 로트)·notes가 같은 모양을 쓰므로 공통 파일에 둔다.
+// 제목 태그는 페이지의 제목 단계에 맞출 수 있게 인자로 받는다.
+export function renderLotCard(bean, { headingTag = 'h3' } = {}) {
+  const card = createEl('a', {
+    className: 'lot',
+    attrs: { href: `/detail.html?id=${encodeURIComponent(bean.id)}` }
+  });
+
+  // NW 로트는 순위가 없어 도장 자리에 등급 약어를 넣고 색을 죽인다.
+  const isNationalWinner = bean.rank === null || bean.rank === undefined;
+
+  const head = createEl('div', {
+    className: 'lot__head',
+    children: [
+      createEl('div', {
+        className: isNationalWinner ? 'lot__rank lot__rank--nw' : 'lot__rank',
+        text: formatRank(bean.rank, bean.award)
+      }),
+      createEl('div', {
+        children: [
+          createEl(headingTag, { className: 'lot__title', text: bean.farm }),
+          createEl('p', {
+            className: 'lot__origin',
+            text: [bean.country_ko, bean.region].filter(Boolean).join(' · ')
+          })
+        ]
+      })
+    ]
+  });
+
+  const bid = createEl('span', { className: 'lot__bid' });
+  bid.append(
+    document.createTextNode(formatUsd(bean.bid_per_lb)),
+    createEl('small', { text: ' /lb' })
+  );
+
+  const figures = createEl('div', {
+    className: 'lot__figures',
+    children: [createEl('span', { className: 'lot__score', text: formatScore(bean.score) }), bid]
+  });
+
+  const foot = createEl('div', {
+    className: 'lot__foot',
+    children: [
+      createEl('span', { className: 'lot__id', text: bean.id }),
+      createEl('span', { className: 'lot__process', text: bean.process_name_ko ?? '' }),
+      bean.has_korean_buyer ? createEl('span', { className: 'lot__korean', text: '한국 낙찰' }) : null
+    ]
+  });
+
+  card.append(head, figures, createEl('hr', { className: 'lot__tear' }), foot);
+  return card;
+}
+
+// ============================================================
 // 로딩·에러·빈 상태
 // ============================================================
 
@@ -216,14 +275,29 @@ export function showLoading(target, count = 3) {
 }
 
 // 실패를 사용자 말로 보여준다. ApiError면 서버가 준 메시지를 그대로 쓴다.
-export function showError(target, error) {
+// onRetry를 넘기면 "다시 시도" 버튼을 함께 붙인다. 네트워크가 잠깐 끊긴 경우
+// 새로고침 없이 같은 요청을 다시 보낼 수 있어야 하기 때문이다.
+export function showError(target, error, onRetry) {
   const message = error instanceof ApiError ? error.message : '알 수 없는 오류가 발생했습니다.';
   clearChildren(target);
-  target.append(createEl('p', {
+
+  const box = createEl('div', {
     className: 'state state--error',
-    text: message,
     attrs: { role: 'alert' }
-  }));
+  });
+  box.append(createEl('p', { text: message }));
+
+  if (onRetry) {
+    const button = createEl('button', {
+      className: 'btn btn--sm',
+      text: '다시 시도',
+      attrs: { type: 'button' }
+    });
+    button.addEventListener('click', onRetry);
+    box.append(button);
+  }
+
+  target.append(box);
 }
 
 // 조건에 맞는 결과가 없을 때. 오류와 구분되어야 한다.
@@ -247,4 +321,5 @@ async function initLayout() {
 // 페이지 스크립트가 `await layoutReady`로 로그인 상태 확인이 끝날 때까지 기다릴 수 있다.
 export const layoutReady = initLayout();
 
-export { api, ApiError };
+// 페이지 스크립트가 common.js 하나만 보고도 API를 쓸 수 있도록 그대로 다시 내보낸다.
+export { api, ApiError, buildQuery };
