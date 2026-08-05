@@ -10,6 +10,7 @@ import authRouter from './routes/auth.js';
 import notesRouter from './routes/notes.js';
 import favoritesRouter from './routes/favorites.js';
 import statsRouter from './routes/stats.js';
+import recommendRouter from './routes/recommend.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -76,6 +77,8 @@ app.use('/api/notes', notesRouter);
 app.use('/api/favorites', favoritesRouter);
 // 통계는 /my만 로그인이 필요해 라우터 안에서 해당 경로에만 requireAuth를 건다.
 app.use('/api/stats', statsRouter);
+// 추천은 내 노트가 있어야 성립하므로 라우터 전체가 로그인 필요다.
+app.use('/api/recommend', recommendRouter);
 // -------------------------------------------------------------------
 
 // 정적 파일도 라우터도 처리하지 못한 요청.

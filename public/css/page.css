@@ -638,6 +638,70 @@
   align-items: start;
 }
 
+/* 취향 프로필 — 왼쪽 요약, 오른쪽 추천 */
+.taste-layout {
+  display: grid;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+/* 산출 근거. 무엇을 몇 건으로 계산했는지 밝히는 줄이다. */
+.taste-basis {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+}
+
+/* 표본이 얇을 때는 지나치지 않게 테두리를 준다. */
+.taste-basis--thin {
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--alert);
+  color: var(--alert);
+}
+
+.taste-tendency {
+  margin-top: var(--space-2);
+  font-size: var(--text-lg);
+  word-break: keep-all;
+}
+
+.taste-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+}
+
+.taste-recommend__grid {
+  grid-template-columns: 1fr;
+}
+
+/* 추천 카드 = 전표 카드 + 매칭률·이유 */
+.rec-card {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.rec-card__match {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--accent);
+  font-size: var(--text-sm);
+}
+
+.rec-card__percent {
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.rec-card__reason {
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+  word-break: keep-all;
+}
+
 .stats-subtitle {
   margin-top: var(--space-5);
   margin-bottom: var(--space-3);
@@ -990,6 +1054,16 @@
   .stats-split {
     grid-template-columns: 18rem 1fr;
     gap: var(--space-6);
+  }
+
+  /* 취향 요약을 왼쪽에 고정폭으로, 추천이 남는 폭을 쓴다 */
+  .taste-layout {
+    grid-template-columns: 20rem 1fr;
+    gap: var(--space-6);
+  }
+
+  .taste-recommend__grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   /* 목차를 왼쪽에 붙여 둔다 */
