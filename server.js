@@ -88,6 +88,8 @@ const DB_UNREACHABLE_CODES = new Set([
   'ETIMEDOUT', 'ECONNREFUSED', 'ENOTFOUND', 'EAI_AGAIN', 'ECONNRESET', 'EHOSTUNREACH'
 ]);
 
+// 오류 코드와 메시지를 보고 "DB에 못 닿은 것"인지 가려낸다.
+// 코드 결함(500)과 일시적 단절(503)을 다르게 답하기 위해 필요하다.
 function isDatabaseUnreachable(err) {
   if (DB_UNREACHABLE_CODES.has(err.code) || DB_UNREACHABLE_CODES.has(err.cause?.code)) return true;
   return /connection timeout|Connection terminated/i.test(err.message ?? '');

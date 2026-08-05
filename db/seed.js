@@ -129,30 +129,59 @@ async function seedSensory(client, beans) {
   }
 }
 
+// 식별자(테이블·컬럼명)는 파라미터 바인딩을 할 수 없다. 호출부에서 받은 문자열을
+// SQL에 끼우지 않고, 아래 허용 목록에 적어 둔 고정 쿼리만 선택해 사용한다.
+const MASTER_SQL = {
+  varieties: {
+    insert: 'INSERT INTO varieties (name) SELECT unnest($1::text[]) ON CONFLICT (name) DO NOTHING',
+    select: 'SELECT id, name FROM varieties'
+  },
+  flavor_notes: {
+    insert: 'INSERT INTO flavor_notes (name) SELECT unnest($1::text[]) ON CONFLICT (name) DO NOTHING',
+    select: 'SELECT id, name FROM flavor_notes'
+  },
+  buyers: {
+    select: 'SELECT id, name FROM buyers'
+  }
+};
+
+const LINK_SQL = {
+  bean_varieties: `INSERT INTO bean_varieties (bean_id, variety_id)
+                   SELECT * FROM unnest($1::text[], $2::int[])
+                   ON CONFLICT DO NOTHING`,
+  bean_buyers: `INSERT INTO bean_buyers (bean_id, buyer_id)
+                SELECT * FROM unnest($1::text[], $2::int[])
+                ON CONFLICT DO NOTHING`,
+  bean_flavors: `INSERT INTO bean_flavors (bean_id, flavor_id)
+                 SELECT * FROM unnest($1::text[], $2::int[])
+                 ON CONFLICT DO NOTHING`
+};
+
 // 이름 목록을 마스터 테이블에 한 번에 넣는다.
 // unnest로 배열 하나를 여러 행으로 펼치므로, 값이 몇 개든 쿼리는 한 번이다.
-async function insertNames(client, table, names) {
+async function insertNames(client, tableKey, names) {
   if (names.length === 0) return;
-  await client.query(
-    `INSERT INTO ${table} (name) SELECT unnest($1::text[]) ON CONFLICT (name) DO NOTHING`,
-    [names]
-  );
+  const sql = MASTER_SQL[tableKey]?.insert;
+  if (!sql) throw new Error(`허용되지 않은 마스터 테이블입니다: ${tableKey}`);
+  await client.query(sql, [names]);
 }
 
 // 방금 넣은 마스터 테이블에서 이름 → id 대응표를 가져온다. 연결 테이블을 채우려면 id가 필요하다.
-async function loadNameToId(client, table) {
-  const { rows } = await client.query(`SELECT id, name FROM ${table}`);
+async function loadNameToId(client, tableKey) {
+  const sql = MASTER_SQL[tableKey]?.select;
+  if (!sql) throw new Error(`허용되지 않은 마스터 테이블입니다: ${tableKey}`);
+  const { rows } = await client.query(sql);
   return new Map(rows.map((row) => [nameKey(row.name), row.id]));
 }
 
 // 연결 테이블 적재. (로트 id, 마스터 id) 쌍 배열을 한 번에 밀어 넣는다.
 // 복합 기본키가 있으므로 ON CONFLICT DO NOTHING이면 재실행해도 중복이 쌓이지 않는다.
-async function insertLinks(client, table, idColumn, pairs) {
+async function insertLinks(client, tableKey, pairs) {
   if (pairs.length === 0) return;
+  const sql = LINK_SQL[tableKey];
+  if (!sql) throw new Error(`허용되지 않은 연결 테이블입니다: ${tableKey}`);
   await client.query(
-    `INSERT INTO ${table} (bean_id, ${idColumn})
-     SELECT * FROM unnest($1::text[], $2::int[])
-     ON CONFLICT DO NOTHING`,
+    sql,
     [pairs.map((pair) => pair[0]), pairs.map((pair) => pair[1])]
   );
 }
@@ -190,9 +219,9 @@ async function seedManyToMany(client, beans, koreanBuyerKeys) {
   const buyerIds = await loadNameToId(client, 'buyers');
   const flavorIds = await loadNameToId(client, 'flavor_notes');
 
-  await insertLinks(client, 'bean_varieties', 'variety_id', buildPairs(beans, (b) => b.varieties, varietyIds));
-  await insertLinks(client, 'bean_buyers', 'buyer_id', buildPairs(beans, (b) => b.auction.buyers, buyerIds));
-  await insertLinks(client, 'bean_flavors', 'flavor_id', buildPairs(beans, (b) => b.flavorNotes, flavorIds));
+  await insertLinks(client, 'bean_varieties', buildPairs(beans, (b) => b.varieties, varietyIds));
+  await insertLinks(client, 'bean_buyers', buildPairs(beans, (b) => b.auction.buyers, buyerIds));
+  await insertLinks(client, 'bean_flavors', buildPairs(beans, (b) => b.flavorNotes, flavorIds));
 }
 
 // ============================================================
@@ -218,6 +247,7 @@ async function countRows(client) {
   return rows;
 }
 
+// 적재 결과를 표처럼 줄 맞춰 출력한다. 어느 테이블이 비었는지 한눈에 보이게 하기 위해서다.
 function printCounts(rows) {
   console.log('\n테이블별 건수');
   console.log('─'.repeat(30));

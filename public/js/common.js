@@ -30,6 +30,7 @@ export function toggleTheme() {
   applyTheme(next);
 }
 
+// 테마 버튼 표시를 현재 모드에 맞추고 클릭을 연결한다.
 function initTheme() {
   // 초기 모드는 <head>의 인라인 스크립트가 이미 정해 뒀다(화면 깜빡임 방지).
   // 인라인 스크립트가 없는 페이지에서도 시스템 설정을 기본값으로 쓴다.
@@ -70,6 +71,7 @@ export async function refreshAuth() {
   return currentUser;
 }
 
+// 헤더의 로그아웃 버튼을 연결한다. 실패하더라도 첫 화면으로는 보낸다.
 function initLogout() {
   document.querySelector('[data-logout]')?.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -121,6 +123,7 @@ const usdFormatter = new Intl.NumberFormat('en-US', {
 
 const numberFormatter = new Intl.NumberFormat('ko-KR');
 
+// 화면에 숫자로 쓸 수 없는 값인지 판단한다. 0과 빈 값을 구분하기 위해 따로 둔다.
 function isMissing(value) {
   if (value === null || value === undefined) return true;
   if (typeof value === 'string' && value.trim() === '') return true;

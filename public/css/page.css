@@ -702,6 +702,12 @@
   align-items: start;
 }
 
+/* 비교표의 최소 너비가 grid 열을 밀어 페이지 전체를 넓히지 않게 한다.
+   표 자체의 가로 스크롤은 안쪽 .table-wrap에서만 처리한다. */
+.guide-main {
+  min-width: 0;
+}
+
 .guide-toc__list {
   display: grid;
   gap: var(--space-1);

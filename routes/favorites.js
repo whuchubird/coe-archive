@@ -6,6 +6,7 @@ import { requireAuth } from './auth.js';
 
 const router = express.Router();
 
+// 아래 모든 즐겨찾기 요청은 로그인된 사용자만 처리한다.
 router.use(requireAuth);
 
 // 외래키 위반(23503) — 없는 로트를 담으려 한 경우.

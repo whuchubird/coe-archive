@@ -176,6 +176,7 @@ function renderFacetGroup(group, counts, labelOf) {
   }
 }
 
+// 네 축의 체크박스를 한 번에 다시 그린다. 축마다 표시 이름을 만드는 방법만 다르다.
 function renderFacets(facets) {
   renderFacetGroup('country', facets.country ?? {}, (v) => COUNTRY_LABELS[v] ?? v);
   renderFacetGroup('award', facets.award ?? {}, (v) => AWARD_LABELS[v] ?? v);
@@ -188,6 +189,7 @@ function renderPagination(page, totalPages) {
   clearChildren(paginationSlot);
   if (totalPages <= 1) return;
 
+  // 새 페이지를 불러오고 결과 영역의 시작점으로 화면을 옮긴다.
   const go = (target) => {
     state.page = target;
     load();
@@ -221,6 +223,7 @@ function renderPagination(page, totalPages) {
   addButton('›', page + 1, { disabled: page === totalPages });
 }
 
+// 서버 응답을 화면에 옮긴다. 건수·카드·페이지 버튼을 한 곳에서 갱신해 상태가 어긋나지 않게 한다.
 function renderResults({ items, total, page, totalPages }) {
   countSlot.textContent = `${formatNumber(total)}건`;
 
@@ -318,6 +321,7 @@ function bindRanges() {
   }
 }
 
+// 정렬 선택은 'sort:order' 한 문자열이라 나눠서 상태에 넣는다.
 function bindSort() {
   sortSelect.addEventListener('change', () => {
     const [sort, order] = sortSelect.value.split(':');
@@ -328,6 +332,7 @@ function bindSort() {
   });
 }
 
+// 전체 해제. 정렬은 그대로 두는데, 보기 순서는 필터가 아니라 사용자가 정한 취향이기 때문이다.
 function bindReset() {
   resetButton.addEventListener('click', () => {
     for (const key of LIST_FILTERS) state[key] = [];

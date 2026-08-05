@@ -70,6 +70,7 @@ function showFormError(form, message) {
   slot.hidden = message === '';
 }
 
+// 에러 자리를 비운다. 새로 제출할 때마다 이전 문구를 먼저 지운다.
 function clearFormError(form) {
   showFormError(form, '');
 }

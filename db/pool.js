@@ -35,6 +35,7 @@ const NETWORK_ERROR_CODES = new Set([
   'ETIMEDOUT', 'ECONNREFUSED', 'ENOTFOUND', 'EAI_AGAIN', 'ECONNRESET', 'EHOSTUNREACH'
 ]);
 
+// 이 오류가 "못 닿아서"인지 판단한다. 드라이버를 바꿔 볼 가치가 있는지 여기서 갈린다.
 function isNetworkError(err) {
   if (NETWORK_ERROR_CODES.has(err.code)) return true;
   if (NETWORK_ERROR_CODES.has(err.cause?.code)) return true;
@@ -59,6 +60,7 @@ function createPgPool() {
   return pool;
 }
 
+// 443(WebSocket)으로 붙는 풀. 5432가 막힌 망에서 쓰며 호출 방식은 pg와 같다.
 function createNeonPool() {
   const pool = new NeonPool({
     connectionString,
@@ -121,6 +123,7 @@ async function selectPool() {
 let activePool = null;
 let pending = null;
 
+// 쓸 준비가 된 풀을 돌려준다. 첫 호출에서만 드라이버를 고르고 이후에는 그대로 재사용한다.
 async function getPool() {
   if (activePool) return activePool;
   // 동시에 여러 요청이 들어와도 연결 시도는 한 번만 한다.

@@ -41,6 +41,7 @@ function traitCell(value) {
   return cell;
 }
 
+// 특성 비교표를 그린다. 숫자와 작은 막대를 함께 두어 크기 차이가 눈에 들어오게 한다.
 function renderCompare(processes) {
   clearChildren(compareTable);
 

@@ -76,6 +76,7 @@ async function loadFavoriteState() {
   }
 }
 
+// 즐겨찾기를 담거나 뺀다. 요청 중에는 버튼을 잠가 연타로 두 번 나가지 않게 한다.
 async function toggleFavorite() {
   favoriteButton.disabled = true;
   try {
@@ -260,6 +261,7 @@ async function loadDetail() {
   }
 }
 
+// 감각 6축이 가까운 로트 3건을 받아 카드로 그린다.
 async function loadSimilar() {
   try {
     const items = await api.get(`/beans/${encodeURIComponent(beanId)}/similar`);

@@ -52,10 +52,12 @@ function currentDose() {
   return Number(doseInput.value);
 }
 
+// 슬라이더가 가리키는 물 비율. 1:N 의 N이다.
 function currentRatio() {
   return Number(ratioInput.value);
 }
 
+// 총 물량 = 원두량 × 비율. 이 화면의 결론이라 한 곳에서만 계산한다.
 function totalWater() {
   return Math.round(currentDose() * currentRatio());
 }
@@ -103,6 +105,7 @@ function renderSteps() {
 let elapsedSeconds = 0;
 let intervalId = null;
 
+// 초를 분:초로 바꾼다. 초는 두 자리로 맞춰 자릿수가 흔들리지 않게 한다.
 function formatClock(seconds) {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -119,6 +122,7 @@ function stepIndexAt(seconds) {
   return STEPS.length - 1;
 }
 
+// 시계·진행바·현재 단계 강조를 한 번에 맞춘다. 따로 갱신하면 서로 어긋난다.
 function updateTimerView() {
   clockOut.textContent = formatClock(elapsedSeconds);
 
@@ -137,12 +141,14 @@ function updateTimerView() {
   }
 }
 
+// 1초마다 불린다. 총 시간에 닿으면 스스로 멈춘다.
 function tick() {
   elapsedSeconds += 1;
   updateTimerView();
   if (elapsedSeconds >= TOTAL_SECONDS) stopTimer();
 }
 
+// 타이머 시작. 이미 돌고 있거나 끝난 상태면 아무것도 하지 않는다.
 function startTimer() {
   if (intervalId !== null || elapsedSeconds >= TOTAL_SECONDS) return;
   intervalId = setInterval(tick, 1000);
@@ -150,6 +156,7 @@ function startTimer() {
   pauseButton.disabled = false;
 }
 
+// 진행을 멈춘다. 경과 시간은 남겨 두어 이어서 시작할 수 있다.
 function stopTimer() {
   if (intervalId !== null) clearInterval(intervalId);
   intervalId = null;
@@ -157,6 +164,7 @@ function stopTimer() {
   pauseButton.disabled = true;
 }
 
+// 처음 상태로 되돌린다. 멈춤과 달리 경과 시간까지 지운다.
 function resetTimer() {
   stopTimer();
   elapsedSeconds = 0;
@@ -188,6 +196,7 @@ function applyRecommendation(beanId) {
   beanHint.textContent = `${process.name} 가공이라 1:${ratio}을 제안합니다. 슬라이더로 바꿔도 됩니다.`;
 }
 
+// 로트 목록을 받아 선택 상자를 채운다. 가공방식을 알아야 권장 비율을 제안할 수 있다.
 async function loadBeans() {
   try {
     // 고르는 용도라 74건을 모두 받는다.

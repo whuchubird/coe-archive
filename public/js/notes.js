@@ -158,6 +158,7 @@ function readNoteForm(form) {
   };
 }
 
+// 서버가 준 문구를 그대로 쓰고, 네트워크 오류처럼 문구가 없을 때만 일반 문장으로 바꾼다.
 function messageFrom(error) {
   return error instanceof ApiError ? error.message : '요청을 보내지 못했습니다.';
 }
@@ -260,6 +261,7 @@ async function loadBeanOptions() {
   if (preselect) createForm.bean_id.value = preselect;
 }
 
+// 내 노트를 받아 카드로 그린다. 수정 모달이 참조하도록 응답을 notes에 담아 둔다.
 async function loadNotes() {
   showLoading(noteList, 2);
   try {
@@ -277,6 +279,7 @@ async function loadNotes() {
   }
 }
 
+// 즐겨찾기한 로트를 전표 카드로 그린다.
 async function loadFavorites() {
   showLoading(favList, 2);
   try {
@@ -341,6 +344,7 @@ noteList.addEventListener('click', (event) => {
   if (button.dataset.action === 'delete') openDelete(note);
 });
 
+// 수정 모달을 열고 기존 값을 폼에 채운다. 어떤 노트인지 dataset에 남겨 저장 때 쓴다.
 function openEdit(note) {
   showFormError('edit', '');
   editForm.bean_id.value = note.bean_id;

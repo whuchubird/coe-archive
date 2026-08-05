@@ -6,6 +6,7 @@
 // SVG 요소는 createElement로 만들면 안 된다. 네임스페이스가 달라 화면에 나오지 않는다.
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
+// SVG 요소를 만든다. createElement로 만들면 네임스페이스가 달라 화면에 나오지 않는다.
 function svgEl(tag, attrs = {}) {
   const element = document.createElementNS(SVG_NS, tag);
   for (const [key, value] of Object.entries(attrs)) {
@@ -220,10 +221,12 @@ const SERIES_SHAPE = {
   experimental: 'cross'
 };
 
+// 가공방식에 배정된 색 토큰을 돌려준다. 색값은 CSS가 들고 있어 다크 모드가 저절로 따라온다.
 export function seriesColor(key) {
   return `var(--series-${SERIES_SLOT[key] ?? 1})`;
 }
 
+// 가공방식에 배정된 마커 모양. 색을 구분하지 못해도 모양으로 읽히게 하려는 것이다.
 export function seriesShape(key) {
   return SERIES_SHAPE[key] ?? 'circle';
 }
@@ -277,6 +280,7 @@ function renderLegend(items) {
   return list;
 }
 
+// 목록 요소를 만든다. 스크린리더가 항목 수를 세도록 role=list를 붙인다.
 function createList(tag, className) {
   const list = document.createElement(tag);
   list.className = className;
@@ -470,6 +474,7 @@ export function renderScatter(container, points, options = {}) {
   const yLogMin = Math.floor(log10(yMin) * 2) / 2;
   const yLogMax = Math.ceil(log10(yMax) * 2) / 2;
 
+  // 데이터 값을 SVG의 실제 그리기 좌표로 바꾼다. y축만 로그 변환한다.
   const xAt = (score) => pad.left + ((score - xMin) / (xMax - xMin)) * plotW;
   const yAt = (bid) => pad.top + plotH - ((log10(bid) - yLogMin) / (yLogMax - yLogMin)) * plotH;
 
@@ -546,6 +551,7 @@ export function renderScatter(container, points, options = {}) {
   tooltip.hidden = true;
   frame.append(svg, tooltip);
 
+  // 점의 설명과 위치를 읽어 해당 점 바로 위에 툴팁을 표시한다.
   const showTooltip = (target) => {
     tooltip.textContent = target.dataset.label;
     tooltip.hidden = false;
@@ -555,6 +561,7 @@ export function renderScatter(container, points, options = {}) {
     tooltip.style.left = `${((box.x + box.width / 2) / width) * 100}%`;
     tooltip.style.top = `${(box.y / height) * 100}%`;
   };
+  // 포인터나 키보드 포커스가 점에서 벗어나면 툴팁을 감춘다.
   const hideTooltip = () => { tooltip.hidden = true; };
 
   // 점마다 리스너를 달지 않고 묶음 하나에서 받는다.
@@ -597,6 +604,7 @@ export function renderScatter(container, points, options = {}) {
   return svg;
 }
 
+// 그릴 값이 없을 때 자리에 넣는 안내 문구.
 function createEmptyNote(text) {
   const p = document.createElement('p');
   p.className = 'state';
