@@ -246,13 +246,26 @@ router.get('/me', async (req, res) => {
   res.json({ authenticated: true, user: rows[0] });
 });
 
-// 로그인이 필요한 라우터 앞에 세운다. 세션에 userId가 없으면 더 진행하지 않는다.
+// 로그인이 필요한 라우터 앞에 세운다. 세션의 userId와 실제 계정 존재 여부를 함께 확인한다.
 // notes·favorites는 이 미들웨어를 통과한 뒤에만 실행되므로,
-// 각 핸들러는 req.session.userId가 있다고 믿고 쿼리를 짤 수 있다.
-export function requireAuth(req, res, next) {
+// 각 핸들러는 유효한 req.session.userId가 있다고 믿고 쿼리를 짤 수 있다.
+export async function requireAuth(req, res, next) {
   if (!req.session.userId) {
     return res.status(401).json({ error: '로그인이 필요합니다.' });
   }
+
+  // 관리자가 계정을 삭제해도 그 사용자의 브라우저에는 세션 쿠키가 남아 있을 수 있다.
+  // 세션의 userId만 믿으면 삭제된 계정이 다음 /me 요청 전까지 인증 라우터를 통과하므로,
+  // 보호된 요청마다 실제 계정이 아직 존재하는지 확인한다.
+  const { rowCount } = await pool.query(
+    'SELECT 1 FROM users WHERE id = $1',
+    [req.session.userId]
+  );
+  if (rowCount === 0) {
+    await destroySession(req);
+    return res.status(401).json({ error: '로그인이 필요합니다.' });
+  }
+
   next();
 }
 
