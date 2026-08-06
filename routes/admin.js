@@ -647,6 +647,60 @@ router.patch('/users/:id/role', async (req, res) => {
   res.json(rows[0]);
 });
 
+// 계정 삭제. 권한 변경과 같은 이유로 자기 자신은 지울 수 없다.
+//
+// 로트 삭제와 정책이 다르다. 로트에 달린 노트는 남이 쓴 기록이라 지우기를 거부하지만,
+// 여기서 사라지는 노트는 삭제 대상 본인의 것이므로 계정과 함께 정리하는 것이 맞다.
+// 대신 몇 건이 사라지는지 응답에 담아, 관리자가 모르고 지우는 일이 없게 한다.
+router.delete('/users/:id', async (req, res) => {
+  const targetId = Number(req.params.id);
+  if (!Number.isInteger(targetId) || targetId < 1 || targetId > MAX_USER_ID) {
+    return res.status(400).json({ error: '잘못된 사용자 번호입니다.' });
+  }
+
+  // 스스로를 지우지 못하게 막으면 관리자가 0명이 되는 사고도 함께 막힌다.
+  if (targetId === req.session.userId) {
+    return res.status(403).json({ error: '자신의 계정은 삭제할 수 없습니다.' });
+  }
+
+  try {
+    const result = await inTransaction(async (client) => {
+      const { rows } = await client.query(
+        // 같은 계정에 대한 권한 변경·삭제가 겹쳐도 삭제 대상과 응답이 어긋나지 않게 잠근다.
+        'SELECT id, username, role FROM users WHERE id = $1 FOR UPDATE',
+        [targetId]
+      );
+      if (rows.length === 0) throw new ValidationError('사용자를 찾을 수 없습니다.', 404);
+
+      // 무엇이 함께 사라지는지 미리 센다. 삭제 후에는 셀 수 없다.
+      const { rows: counts } = await client.query(
+        `SELECT (SELECT COUNT(*)::int FROM notes     WHERE user_id = $1) AS notes,
+                (SELECT COUNT(*)::int FROM favorites WHERE user_id = $1) AS favorites`,
+        [targetId]
+      );
+
+      // notes·favorites의 user_id는 ON DELETE CASCADE라 함께 지워지지만,
+      // 무엇이 사라지는지 코드에 드러나도록 직접 지운다.
+      await client.query('DELETE FROM favorites WHERE user_id = $1', [targetId]);
+      await client.query('DELETE FROM notes WHERE user_id = $1', [targetId]);
+      await client.query('DELETE FROM users WHERE id = $1', [targetId]);
+
+      return {
+        deleted: rows[0].id,
+        username: rows[0].username,
+        removedNotes: counts[0].notes,
+        removedFavorites: counts[0].favorites
+      };
+    });
+    res.json(result);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      return res.status(err.status).json({ error: err.message, ...err.extra });
+    }
+    throw err;
+  }
+});
+
 // ============================================================
 // 대시보드
 // ============================================================

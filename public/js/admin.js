@@ -30,7 +30,8 @@ const state = {
   processError: null,
   // 폼이 수정 중인 로트 ID. null이면 추가다.
   editingId: null,
-  deletingId: null
+  deletingId: null,
+  deletingUserId: null
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -69,7 +70,14 @@ const el = {
   deleteTarget: $('[data-delete-target]'),
   deleteError: $('[data-delete-error]'),
   deleteConfirm: $('[data-delete-confirm]'),
-  deleteCancel: $('[data-delete-cancel]')
+  deleteCancel: $('[data-delete-cancel]'),
+
+  userDeleteDialog: $('[data-user-delete-dialog]'),
+  userDeleteTarget: $('[data-user-delete-target]'),
+  userDeleteImpact: $('[data-user-delete-impact]'),
+  userDeleteError: $('[data-user-delete-error]'),
+  userDeleteConfirm: $('[data-user-delete-confirm]'),
+  userDeleteCancel: $('[data-user-delete-cancel]')
 };
 
 // ============================================================
@@ -148,6 +156,15 @@ async function gate() {
 function initTabs() {
   const tabs = [...document.querySelectorAll('[role="tab"]')];
 
+  // 탭을 열 때마다 그 탭의 목록을 다시 받는다.
+  // 특히 사용자 표의 노트·즐겨찾기 수는 계정 삭제 모달이 "무엇이 함께 사라지는지"를
+  // 알리는 근거라, 오래된 숫자를 보여주면 안 된다.
+  const refresh = {
+    'tab-dashboard': loadSummary,
+    'tab-beans': loadBeans,
+    'tab-users': loadUsers
+  };
+
   const select = (target) => {
     for (const tab of tabs) {
       const on = tab === target;
@@ -156,6 +173,7 @@ function initTabs() {
       document.getElementById(tab.getAttribute('aria-controls')).hidden = !on;
     }
     target.focus();
+    refresh[target.id]?.();
   };
 
   for (const tab of tabs) {
@@ -621,7 +639,7 @@ async function loadUsers() {
 function renderUserRows() {
   clearChildren(el.userRows);
   if (state.users.length === 0) {
-    el.userRows.append(emptyRow(5, '가입한 사용자가 없습니다.'));
+    el.userRows.append(emptyRow(6, '가입한 사용자가 없습니다.'));
     return;
   }
 
@@ -651,14 +669,73 @@ function renderUserRows() {
       roleCell.append(select);
     }
 
+    // td 자체를 flex로 만들면 브라우저의 표 레이아웃 계산에서 빠질 수 있다.
+    // 작업 버튼만 안쪽 래퍼에 묶어 셀 의미와 열 너비를 유지한다.
+    const actionCell = createEl('td');
+    const actions = createEl('div', { className: 'admin-actions' });
+    if (!isMe) {
+      // 자기 계정은 서버가 거부하므로 버튼 자체를 두지 않는다.
+      actions.append(createEl('button', {
+        className: 'btn btn--sm btn--ghost btn--danger',
+        text: '삭제',
+        attrs: { type: 'button', 'data-action': 'delete-user', 'aria-label': `${user.username} 계정 삭제` }
+      }));
+    }
+    actionCell.append(actions);
+
     row.append(
       nameCell,
       roleCell,
       createEl('td', { className: 'num', text: formatNumber(user.note_count) }),
       createEl('td', { className: 'num', text: formatNumber(user.favorite_count) }),
-      createEl('td', { className: 'num', text: formatDate(user.created_at) })
+      createEl('td', { className: 'num', text: formatDate(user.created_at) }),
+      actionCell
     );
     el.userRows.append(row);
+  }
+}
+
+// 계정 삭제 확인 모달을 연다.
+// 노트·즐겨찾기가 함께 사라지므로 몇 건인지 먼저 보여준다.
+function openUserDelete(user) {
+  state.deletingUserId = user.id;
+  clearFormError(el.userDeleteError);
+  clearChildren(el.userDeleteTarget);
+  el.userDeleteConfirm.disabled = false;
+
+  // 사용자가 정한 아이디라 textContent로 넣는다.
+  el.userDeleteTarget.append(
+    createEl('strong', { text: user.username }),
+    createEl('span', { className: 'muted', text: user.role === 'admin' ? ' (관리자)' : '' })
+  );
+
+  const parts = [];
+  if (user.note_count > 0) parts.push(`노트 ${formatNumber(user.note_count)}건`);
+  if (user.favorite_count > 0) parts.push(`즐겨찾기 ${formatNumber(user.favorite_count)}건`);
+  el.userDeleteImpact.textContent = parts.length === 0
+    ? '작성한 노트와 즐겨찾기가 없습니다.'
+    : `${parts.join('과 ')}도 함께 삭제됩니다.`;
+
+  el.userDeleteDialog.showModal();
+}
+
+// 실제 계정 삭제. 서버가 거부하면 이유를 모달 안에 그대로 남긴다.
+async function confirmUserDelete() {
+  if (!state.deletingUserId) return;
+  clearFormError(el.userDeleteError);
+  el.userDeleteConfirm.disabled = true;
+
+  try {
+    await api.del(`/admin/users/${state.deletingUserId}`);
+    el.userDeleteDialog.close();
+    state.deletingUserId = null;
+    await Promise.all([loadUsers(), loadSummary()]);
+  } catch (err) {
+    showFormError(el.userDeleteError, err instanceof ApiError ? err.message : '삭제에 실패했습니다.');
+    // 이미 지워진 계정이라면 목록이 오래된 것이므로 다시 받는다.
+    if (err instanceof ApiError && err.status === 404) loadUsers();
+  } finally {
+    el.userDeleteConfirm.disabled = false;
   }
 }
 
@@ -757,7 +834,7 @@ function initDialogEvents() {
   el.deleteDialog.addEventListener('close', () => { state.deletingId = null; });
 }
 
-// 사용자 표의 권한 드롭다운도 위임으로 연결한다.
+// 사용자 표의 권한 드롭다운과 삭제 버튼을 위임으로 연결한다.
 function initUserEvents() {
   el.userRows.addEventListener('change', (event) => {
     const select = event.target.closest('[data-role-select]');
@@ -765,6 +842,17 @@ function initUserEvents() {
     const userId = Number(select.closest('tr').dataset.userId);
     changeRole(select, userId);
   });
+
+  el.userRows.addEventListener('click', (event) => {
+    if (event.target.closest('button')?.dataset.action !== 'delete-user') return;
+    const userId = Number(event.target.closest('tr').dataset.userId);
+    const user = state.users.find((candidate) => candidate.id === userId);
+    if (user) openUserDelete(user);
+  });
+
+  el.userDeleteConfirm.addEventListener('click', confirmUserDelete);
+  el.userDeleteCancel.addEventListener('click', () => el.userDeleteDialog.close());
+  el.userDeleteDialog.addEventListener('close', () => { state.deletingUserId = null; });
 }
 
 // ============================================================

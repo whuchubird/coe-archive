@@ -169,7 +169,8 @@
       <!-- ── 사용자 관리 ──────────────────────────────────── -->
       <section id="panel-users" role="tabpanel" aria-labelledby="tab-users" tabindex="0" hidden>
         <p class="muted admin-note">
-          자신의 권한은 바꿀 수 없습니다. 관리자가 한 명도 남지 않는 상황을 막기 위한 규칙입니다.
+          자신의 권한 변경과 계정 삭제는 할 수 없습니다. 관리자가 한 명도 남지 않는 상황을 막기 위한 규칙입니다.
+          계정을 삭제하면 그 사람이 쓴 노트와 즐겨찾기도 함께 사라집니다.
         </p>
 
         <div class="table-wrap">
@@ -182,6 +183,7 @@
                 <th scope="col" class="num">노트</th>
                 <th scope="col" class="num">즐겨찾기</th>
                 <th scope="col">가입일</th>
+                <th scope="col"><span class="visually-hidden">작업</span></th>
               </tr>
             </thead>
             <tbody data-user-rows></tbody>
@@ -332,7 +334,21 @@
     </form>
   </dialog>
 
-  <!-- ── 삭제 확인 모달 ──────────────────────────────────── -->
+  <!-- ── 계정 삭제 확인 모달 ─────────────────────────────── -->
+  <dialog class="modal modal--confirm" data-user-delete-dialog aria-labelledby="user-delete-title">
+    <h2 class="panel__title" id="user-delete-title">계정을 삭제할까요?</h2>
+    <p data-user-delete-target></p>
+    <!-- 함께 사라지는 것을 숫자로 보여준다. 되돌릴 수 없기 때문이다. -->
+    <p class="muted" data-user-delete-impact></p>
+    <p class="muted">되돌릴 수 없습니다.</p>
+    <p class="form-error" data-user-delete-error role="alert" hidden></p>
+    <div class="modal__actions">
+      <button class="btn btn--sm btn--ghost" type="button" data-user-delete-cancel>취소</button>
+      <button class="btn btn--sm btn--danger" type="button" data-user-delete-confirm>삭제</button>
+    </div>
+  </dialog>
+
+  <!-- ── 로트 삭제 확인 모달 ─────────────────────────────── -->
   <dialog class="modal modal--confirm" data-delete-dialog aria-labelledby="delete-title">
     <h2 class="panel__title" id="delete-title">로트를 삭제할까요?</h2>
     <p data-delete-target></p>
@@ -345,12 +361,10 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p class="muted">
-        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며
-        가공방식·품종·총점을 근거로 한 <strong>추정치</strong>입니다.
-        그 외 항목은 모두 공식 데이터입니다.
+      <p class="disclaimer">
+        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며, 가공방식·품종·총점을 근거로 산출한 추정치입니다.
       </p>
-      <p class="muted">COE ARCHIVE — 동적웹프로그래밍 과제</p>
+      <p>출처 Alliance for Coffee Excellence (ACE) 공식 경쟁·경매 결과 · COE 2025 브라질·과테말라 74건</p>
     </div>
   </footer>
 
