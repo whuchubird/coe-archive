@@ -35,8 +35,15 @@ const maxDistanceFor = (axisCount) => Math.sqrt(axisCount * AXIS_MAX_GAP * AXIS_
 const DEFAULT_LIMIT = 3;
 const MAX_LIMIT = 12;
 
-// 프로필 없음 응답은 클라이언트가 그대로 표시하므로 API 명세의 문구를 유지한다.
-const NO_PROFILE_MESSAGE = '노트를 3건 이상 작성하면 추천을 받을 수 있습니다';
+// 프로필 없음 응답은 클라이언트가 그대로 표시한다.
+// 건수를 못 박지 않는다 — 노트 1건만 있어도 프로필은 생기고,
+// 3건은 "별점 4점 이상만 쓸지, 전체로 넓힐지"를 가르는 값일 뿐이다.
+// 대신 쌓을수록 평균이 안정된다는 사실을 알려 준다.
+const NO_PROFILE_MESSAGE = '노트를 등록하면 추천이 시작됩니다. 노트 수가 늘어날수록 추천 정확도가 올라갑니다';
+
+// 노트는 있는데 감각 6축을 하나도 기록하지 않은 경우. 거리를 잴 기준이 없다.
+// 이미 노트를 쓴 사람에게 "노트를 등록하라"고 하면 무엇이 부족한지 알 수 없다.
+const NO_AXES_MESSAGE = '노트에 감각 6축을 기록하면 추천이 시작됩니다. 기록이 쌓일수록 추천 정확도가 올라갑니다';
 // 프로필에서 값이 실제로 채워진 축만 고른다.
 // 기록되지 않은 축을 SQL에 넣으면 POWER(x - NULL, 2)가 NULL이 되어
 // 거리 전체가 NULL로 무너지고 정렬이 뜻을 잃는다.
@@ -287,7 +294,7 @@ router.get('/', async (req, res) => {
   // 노트는 있지만 감각을 하나도 기록하지 않았다면 거리를 잴 기준이 없다.
   const usableAxes = usableAxesOf(profile.axes);
   if (usableAxes.length === 0) {
-    return res.json({ hasProfile: false, message: NO_PROFILE_MESSAGE });
+    return res.json({ hasProfile: false, message: NO_AXES_MESSAGE });
   }
 
   const limit = parseLimit(req.query.limit);
