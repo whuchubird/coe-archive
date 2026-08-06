@@ -82,6 +82,8 @@ export const api = {
   get: (path) => request('GET', path),
   post: (path, body) => request('POST', path, body),
   put: (path, body) => request('PUT', path, body),
+  // 권한 변경처럼 한 필드만 고칠 때 쓴다.
+  patch: (path, body) => request('PATCH', path, body),
   del: (path) => request('DELETE', path)
 };
 

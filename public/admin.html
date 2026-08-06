@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>관리 — COE ARCHIVE</title>
+
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('coe-theme');
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || systemTheme;
+    } catch {
+      document.documentElement.dataset.theme = 'light';
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/page.css">
+</head>
+<body data-auth="unknown">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="brand" href="/index.html">COE <span class="brand__mark">ARCHIVE</span></a>
+
+      <nav aria-label="주요 메뉴">
+        <ul class="nav" role="list">
+          <li><a class="nav__link" href="/beans.html">아카이브</a></li>
+          <li><a class="nav__link" href="/stats.html">통계</a></li>
+          <li><a class="nav__link" href="/guide.html">가공방식</a></li>
+          <li><a class="nav__link" href="/brew.html">추출 계산기</a></li>
+          <li class="auth-only"><a class="nav__link" href="/notes.html">내 노트</a></li>
+          <li class="guest-only"><a class="nav__link" href="/login.html">로그인</a></li>
+          <li class="auth-only"><span class="nav__user" data-user-name></span></li>
+          <li class="auth-only"><button class="btn btn--sm btn--ghost" type="button" data-logout>로그아웃</button></li>
+        </ul>
+      </nav>
+
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="다크 모드로 전환">☾</button>
+    </div>
+  </header>
+
+  <main id="main" class="page container">
+
+    <!-- 권한 확인 중. 관리자가 아닌 사람에게 관리 화면이 잠깐이라도 보이면 안 된다. -->
+    <div class="state" data-admin-checking>권한을 확인하는 중입니다…</div>
+
+    <!-- 관리자가 아닐 때. 안내를 보여주고 메인으로 돌려보낸다. -->
+    <section class="admin-block" data-admin-denied hidden aria-live="polite">
+      <h1 class="serif">접근 권한이 없습니다</h1>
+      <p class="muted">
+        이 페이지는 관리자만 볼 수 있습니다.
+        잠시 후 첫 화면으로 이동합니다.
+      </p>
+      <p><a class="btn btn--sm" href="/index.html">지금 이동</a></p>
+    </section>
+
+    <!-- 관리자에게만 보이는 본문 -->
+    <div data-admin-app hidden>
+      <div class="section__head">
+        <h1 class="serif">Admin</h1>
+        <p class="muted">로트·사용자 관리</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="관리 항목">
+        <button class="tab" type="button" role="tab"
+                id="tab-dashboard" aria-controls="panel-dashboard"
+                aria-selected="true" tabindex="0">대시보드</button>
+        <button class="tab" type="button" role="tab"
+                id="tab-beans" aria-controls="panel-beans"
+                aria-selected="false" tabindex="-1">로트 관리</button>
+        <button class="tab" type="button" role="tab"
+                id="tab-users" aria-controls="panel-users"
+                aria-selected="false" tabindex="-1">사용자 관리</button>
+      </div>
+
+      <!-- ── 대시보드 ─────────────────────────────────────── -->
+      <section id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" tabindex="0">
+        <dl class="admin-totals" data-admin-totals></dl>
+
+        <div class="admin-recent">
+          <section>
+            <h2 class="stats-subtitle">최근 가입 사용자</h2>
+            <div class="table-wrap">
+              <table class="data-table data-table--dense">
+                <thead>
+                  <tr>
+                    <th scope="col">아이디</th>
+                    <th scope="col">권한</th>
+                    <th scope="col">가입일</th>
+                  </tr>
+                </thead>
+                <tbody data-recent-users></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="stats-subtitle">최근 작성 노트</h2>
+            <div class="table-wrap">
+              <table class="data-table data-table--dense">
+                <thead>
+                  <tr>
+                    <th scope="col">작성자</th>
+                    <th scope="col">로트</th>
+                    <th scope="col">별점</th>
+                    <th scope="col">작성일</th>
+                  </tr>
+                </thead>
+                <tbody data-recent-notes></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ── 로트 관리 ────────────────────────────────────── -->
+      <section id="panel-beans" role="tabpanel" aria-labelledby="tab-beans" tabindex="0" hidden>
+        <div class="admin-toolbar">
+          <div class="field field--inline">
+            <label class="field__label" for="bean-search">검색</label>
+            <input class="input" type="search" id="bean-search"
+                   placeholder="로트 ID · 농장 · 국가" data-bean-search>
+          </div>
+
+          <div class="field field--inline">
+            <label class="field__label" for="bean-sort">정렬</label>
+            <select class="select" id="bean-sort" data-bean-sort>
+              <option value="id:asc">로트 ID ↑</option>
+              <option value="id:desc">로트 ID ↓</option>
+              <option value="farm:asc">농장명 ↑</option>
+              <option value="score:desc">점수 높은 순</option>
+              <option value="score:asc">점수 낮은 순</option>
+              <option value="bid:desc">낙찰가 높은 순</option>
+              <option value="notes:desc">노트 많은 순</option>
+            </select>
+          </div>
+
+          <p class="admin-toolbar__count muted" data-bean-count aria-live="polite"></p>
+
+          <button class="btn btn--sm btn--primary" type="button" data-bean-add>로트 추가</button>
+        </div>
+
+        <div class="table-wrap" data-bean-table-wrap>
+          <table class="data-table data-table--dense admin-table">
+            <caption class="visually-hidden">등록된 로트 목록. 행을 누르면 수정할 수 있습니다.</caption>
+            <thead>
+              <tr>
+                <th scope="col">로트 ID</th>
+                <th scope="col">농장</th>
+                <th scope="col">국가</th>
+                <th scope="col">가공</th>
+                <th scope="col" class="num">점수</th>
+                <th scope="col" class="num">낙찰가</th>
+                <th scope="col" class="num">노트</th>
+                <th scope="col"><span class="visually-hidden">작업</span></th>
+              </tr>
+            </thead>
+            <tbody data-bean-rows></tbody>
+          </table>
+        </div>
+        <div data-bean-state></div>
+      </section>
+
+      <!-- ── 사용자 관리 ──────────────────────────────────── -->
+      <section id="panel-users" role="tabpanel" aria-labelledby="tab-users" tabindex="0" hidden>
+        <p class="muted admin-note">
+          자신의 권한은 바꿀 수 없습니다. 관리자가 한 명도 남지 않는 상황을 막기 위한 규칙입니다.
+        </p>
+
+        <div class="table-wrap">
+          <table class="data-table data-table--dense admin-table">
+            <caption class="visually-hidden">가입한 사용자 목록과 권한</caption>
+            <thead>
+              <tr>
+                <th scope="col">아이디</th>
+                <th scope="col">권한</th>
+                <th scope="col" class="num">노트</th>
+                <th scope="col" class="num">즐겨찾기</th>
+                <th scope="col">가입일</th>
+              </tr>
+            </thead>
+            <tbody data-user-rows></tbody>
+          </table>
+        </div>
+        <div data-user-state></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ── 로트 추가·수정 모달 ─────────────────────────────── -->
+  <dialog class="modal modal--wide" data-bean-dialog aria-labelledby="bean-dialog-title">
+    <form method="dialog" data-bean-form>
+      <h2 class="panel__title" id="bean-dialog-title">로트 수정</h2>
+
+      <p class="form-error" data-bean-error role="alert" hidden></p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label class="field__label" for="f-id">로트 ID <abbr title="필수">*</abbr></label>
+          <input class="input" id="f-id" name="id" required maxlength="32"
+                 pattern="[A-Za-z0-9]+" placeholder="BR25N01">
+          <p class="field__hint">영문자와 숫자만. 추가한 뒤에는 바꿀 수 없습니다.</p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-farm">농장명 <abbr title="필수">*</abbr></label>
+          <input class="input" id="f-farm" name="farm" required maxlength="120">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-farmer">생산자</label>
+          <input class="input" id="f-farmer" name="farmer" maxlength="120">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-country">국가 (영문) <abbr title="필수">*</abbr></label>
+          <input class="input" id="f-country" name="country" required maxlength="60" placeholder="Brazil">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-country-ko">국가 (한글) <abbr title="필수">*</abbr></label>
+          <input class="input" id="f-country-ko" name="country_ko" required maxlength="60" placeholder="브라질">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-region">지역</label>
+          <input class="input" id="f-region" name="region" maxlength="120">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-year">연도 <abbr title="필수">*</abbr></label>
+          <input class="input" type="number" id="f-year" name="year" required
+                 min="2000" max="2100" step="1" value="2025">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-award">등급 <abbr title="필수">*</abbr></label>
+          <select class="select" id="f-award" name="award" required>
+            <option value="COE">COE</option>
+            <option value="NW">NW (National Winner)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-rank">순위</label>
+          <input class="input" type="number" id="f-rank" name="rank" min="1" max="999" step="1">
+          <p class="field__hint">NW 로트는 비워 둡니다.</p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-category">부문 (영문)</label>
+          <input class="input" id="f-category" name="category" maxlength="120">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-category-ko">부문 (한글)</label>
+          <input class="input" id="f-category-ko" name="category_ko" maxlength="120">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-process">가공방식 <abbr title="필수">*</abbr></label>
+          <select class="select" id="f-process" name="process_key" required data-process-select></select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-score">점수 <abbr title="필수">*</abbr></label>
+          <input class="input" type="number" id="f-score" name="score" required
+                 min="0" max="100" step="0.01" placeholder="88.50">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-bid">낙찰가 (USD/lb)</label>
+          <input class="input" type="number" id="f-bid" name="bid_per_lb" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-weight">중량 (lb)</label>
+          <input class="input" type="number" id="f-weight" name="weight_lb" min="0" step="0.01">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-total">총 낙찰액 (USD)</label>
+          <input class="input" type="number" id="f-total" name="total_value_usd" min="0" step="0.01">
+          <p class="field__hint">비워 두면 그대로 비어 있습니다. 자동 계산하지 않습니다.</p>
+        </div>
+      </div>
+
+      <fieldset class="form-fieldset">
+        <legend class="field__label">감각 6축 <span class="muted">(1 ~ 5, 추정치)</span></legend>
+        <div class="form-grid form-grid--axes" data-axis-grid></div>
+        <p class="field__hint">
+          여섯 축을 모두 비우면 감각 정보 없이 저장됩니다.
+        </p>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="f-varieties">품종</label>
+        <input class="input" id="f-varieties" name="varieties"
+               placeholder="Geisha, Bourbon" data-list-input>
+        <p class="field__hint">쉼표로 구분합니다.</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="f-flavors">향미</label>
+        <input class="input" id="f-flavors" name="flavor_notes"
+               placeholder="자몽, 재스민, 꿀" data-list-input>
+        <p class="field__hint">쉼표로 구분합니다.</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="f-buyers">낙찰 업체</label>
+        <input class="input" id="f-buyers" name="buyers"
+               placeholder="Momos Coffee, Fritz Coffee" data-list-input>
+        <p class="field__hint">쉼표로 구분합니다. 없는 업체는 새로 등록됩니다.</p>
+      </div>
+
+      <!-- 저장 전 미리보기. 쉼표 입력이 어떻게 나뉘는지 눈으로 확인한다. -->
+      <section class="preview">
+        <h3 class="preview__title">저장될 내용</h3>
+        <div data-preview></div>
+      </section>
+
+      <div class="modal__actions">
+        <button class="btn btn--sm btn--ghost" type="button" data-bean-cancel>취소</button>
+        <button class="btn btn--sm btn--primary" type="submit" data-bean-submit>저장</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ── 삭제 확인 모달 ──────────────────────────────────── -->
+  <dialog class="modal modal--confirm" data-delete-dialog aria-labelledby="delete-title">
+    <h2 class="panel__title" id="delete-title">로트를 삭제할까요?</h2>
+    <p data-delete-target></p>
+    <p class="form-error" data-delete-error role="alert" hidden></p>
+    <div class="modal__actions">
+      <button class="btn btn--sm btn--ghost" type="button" data-delete-cancel>취소</button>
+      <button class="btn btn--sm btn--danger" type="button" data-delete-confirm>삭제</button>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="muted">
+        감각 6축과 향미 키워드는 ACE 공식 공개 항목이 아니며
+        가공방식·품종·총점을 근거로 한 <strong>추정치</strong>입니다.
+        그 외 항목은 모두 공식 데이터입니다.
+      </p>
+      <p class="muted">COE ARCHIVE — 동적웹프로그래밍 과제</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

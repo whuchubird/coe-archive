@@ -63,12 +63,46 @@ export async function refreshAuth() {
   }
 
   document.body.dataset.auth = currentUser ? 'member' : 'guest';
+  // 권한은 로그인 여부와 별개다. 메뉴를 보이고 숨기는 데만 쓰고,
+  // 실제 접근 판정은 서버의 requireAdmin이 한다.
+  document.body.dataset.role = currentUser?.role ?? 'guest';
 
   const nameSlot = document.querySelector('[data-user-name]');
   // 사용자가 정한 값이므로 innerHTML이 아니라 textContent로 넣는다.
   if (nameSlot) nameSlot.textContent = currentUser ? currentUser.username : '';
 
+  syncAdminNav();
+
   return currentUser;
+}
+
+// 관리자에게만 헤더에 '관리' 메뉴를 붙인다.
+//
+// 메뉴를 숨기는 것은 편의일 뿐 보안이 아니다. 주소를 직접 쳐서 들어와도
+// admin.html이 다시 확인하고, 무엇보다 /api/admin/* 이 매 요청 권한을 본다.
+// 여기서 만들어 넣는 이유는 페이지마다 같은 <li>를 적어 두면 관리자가 아닌
+// 사람의 HTML에도 관리 화면의 존재가 그대로 드러나기 때문이다.
+function syncAdminNav() {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+
+  const existing = nav.querySelector('[data-admin-nav]');
+
+  if (currentUser?.role !== 'admin') {
+    existing?.remove();
+    return;
+  }
+  if (existing) return;
+
+  const link = createEl('a', { className: 'nav__link', text: '관리', attrs: { href: '/admin.html' } });
+  if (location.pathname === '/admin.html') link.setAttribute('aria-current', 'page');
+
+  const item = createEl('li', { className: 'admin-only', children: [link] });
+  item.dataset.adminNav = '';
+
+  // 사용자 이름·로그아웃 앞에 둔다. 그 둘은 항상 오른쪽 끝에 있어야 한다.
+  const nameItem = nav.querySelector('[data-user-name]')?.closest('li');
+  nav.insertBefore(item, nameItem ?? null);
 }
 
 // 헤더의 로그아웃 버튼을 연결한다. 실패하더라도 첫 화면으로는 보낸다.

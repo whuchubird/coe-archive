@@ -109,10 +109,14 @@ CREATE TABLE bean_flavors (
 );
 
 -- 사용자. 비밀번호는 bcrypt 해시만 저장한다. 평문은 어디에도 남기지 않는다.
+-- role은 인가(무엇을 할 수 있는가)를 가르는 값이다. 인증(누구인가)과는 다른 층위다.
+-- 기본은 'user'이고, 회원가입으로는 관리자가 될 수 없다(INSERT에 role을 넣지 않는다).
+-- 관리자 지정은 `npm run make-admin -- 아이디` 로만 한다.
 CREATE TABLE users (
   id            SERIAL PRIMARY KEY,
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  role          TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
   created_at    TIMESTAMPTZ DEFAULT now()
 );
 

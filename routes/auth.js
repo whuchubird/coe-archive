@@ -132,6 +132,10 @@ function validateCredentials(username, password) {
 // 먼저 SELECT로 확인하고 INSERT하면 그 사이에 같은 아이디가 들어올 수 있어,
 // ON CONFLICT로 한 번에 처리하고 반환된 행이 없으면 중복으로 본다.
 router.post('/register', async (req, res) => {
+  // 본문에서 아이디와 비밀번호만 꺼낸다.
+  // 클라이언트가 { role: "admin" }을 같이 보내도 여기서 읽지 않고,
+  // 아래 INSERT의 컬럼 목록에도 role이 없어 DB에는 기본값 'user'만 들어간다.
+  // 관리자 지정은 `npm run make-admin -- 아이디` 로만 한다.
   const { username, password } = req.body ?? {};
 
   const message = validateCredentials(username, password);
@@ -146,7 +150,7 @@ router.post('/register', async (req, res) => {
     ({ rows } = await pool.query(
       `INSERT INTO users (username, password_hash)
        VALUES ($1, $2)
-       RETURNING id, username`,
+       RETURNING id, username, role`,
       [username.trim(), passwordHash]
     ));
   } catch (err) {
@@ -192,7 +196,7 @@ router.post('/login', async (req, res) => {
 
   // 가입 때와 같은 기준으로 찾는다. lower(username) 인덱스가 이 조건을 그대로 받는다.
   const { rows } = await pool.query(
-    'SELECT id, username, password_hash FROM users WHERE lower(username) = lower($1)',
+    'SELECT id, username, role, password_hash FROM users WHERE lower(username) = lower($1)',
     [username.trim()]
   );
 
@@ -209,7 +213,8 @@ router.post('/login', async (req, res) => {
   await regenerateSession(req);
   req.session.userId = user.id;
 
-  res.json({ authenticated: true, user: { id: user.id, username: user.username } });
+  // 해시는 절대 응답에 담지 않는다. 필요한 필드만 골라 내보낸다.
+  res.json({ authenticated: true, user: { id: user.id, username: user.username, role: user.role } });
 });
 
 // 로그아웃. 세션을 지우고 브라우저 쿠키도 함께 정리한다.
@@ -226,8 +231,10 @@ router.get('/me', async (req, res) => {
     return res.json({ authenticated: false, user: null });
   }
 
+  // role까지 함께 내려 화면이 관리자 메뉴를 보일지 판단할 수 있게 한다.
+  // 다만 화면에서 감추는 것은 편의일 뿐이고, 실제 판정은 requireAdmin이 서버에서 한다.
   const { rows } = await pool.query(
-    'SELECT id, username FROM users WHERE id = $1',
+    'SELECT id, username, role FROM users WHERE id = $1',
     [req.session.userId]
   );
 

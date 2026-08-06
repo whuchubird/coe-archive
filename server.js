@@ -11,6 +11,7 @@ import notesRouter from './routes/notes.js';
 import favoritesRouter from './routes/favorites.js';
 import statsRouter from './routes/stats.js';
 import recommendRouter from './routes/recommend.js';
+import adminRouter from './routes/admin.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -79,6 +80,9 @@ app.use('/api/favorites', favoritesRouter);
 app.use('/api/stats', statsRouter);
 // 추천은 내 노트가 있어야 성립하므로 라우터 전체가 로그인 필요다.
 app.use('/api/recommend', recommendRouter);
+// 관리자 API는 라우터 전체에 requireAdmin이 걸려 있다.
+// 화면에서 메뉴를 숨기는 것과 별개로, 서버가 매 요청 권한을 확인한다.
+app.use('/api/admin', adminRouter);
 // -------------------------------------------------------------------
 
 // 정적 파일도 라우터도 처리하지 못한 요청.

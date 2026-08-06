@@ -2,7 +2,7 @@
 // 모든 수치는 서버가 GROUP BY·AVG·COUNT로 계산해 내려준 것을 그대로 그린다.
 // 여기서 합계를 다시 내거나 평균을 구하지 않는다.
 import {
-  layoutReady, api, getCurrentUser,
+  layoutReady, api, ApiError, getCurrentUser,
   createEl, clearChildren, showError, showEmpty, renderLotCard,
   formatScore, formatUsd, formatNumber, formatDecimal
 } from './common.js';
@@ -102,10 +102,10 @@ function tendencyText(tendency) {
 
 // 추천 카드 하나. 전표 카드를 그대로 쓰고 매칭률·이유를 아래에 덧붙인다.
 function renderRecommendation(item) {
-  return createEl('div', {
+  return createEl('article', {
     className: 'rec-card',
     children: [
-      renderLotCard(item),
+      renderLotCard(item, { headingTag: 'h4' }),
       createEl('div', {
         className: 'rec-card__match',
         children: [
@@ -129,27 +129,32 @@ function renderTasteEmpty(message) {
   }));
 }
 
+// 로그인하지 않은 상태. 최초 진입뿐 아니라 요청 사이에 세션이 끝난 경우에도 쓴다.
+function renderTasteGuest() {
+  clearChildren(tasteSlot);
+  tasteSlot.append(createEl('div', {
+    className: 'state taste-empty',
+    children: [
+      createEl('p', { text: '로그인하고 테이스팅 노트를 남기면 취향에 맞는 로트를 추천해 드립니다.' }),
+      createEl('a', {
+        className: 'btn btn--primary',
+        text: '로그인',
+        attrs: { href: `/login.html?next=${encodeURIComponent('/stats.html')}` }
+      })
+    ]
+  }));
+}
+
 // 취향 프로필 섹션을 그린다. 로그인 여부·노트 유무에 따라 세 가지 화면이 나온다.
 async function loadTasteProfile() {
   // 비로그인에게는 로그인부터 안내한다. 요청을 보내 봐야 401이다.
   if (!getCurrentUser()) {
-    clearChildren(tasteSlot);
-    tasteSlot.append(createEl('div', {
-      className: 'state taste-empty',
-      children: [
-        createEl('p', { text: '로그인하고 테이스팅 노트를 남기면 취향에 맞는 로트를 추천해 드립니다.' }),
-        createEl('a', {
-          className: 'btn btn--primary',
-          text: '로그인',
-          attrs: { href: `/login.html?next=${encodeURIComponent('/stats.html')}` }
-        })
-      ]
-    }));
-    return;
+    return renderTasteGuest();
   }
 
   try {
-    const data = await api.get('/recommend');
+    // 화면 명세가 3건이므로 서버 기본값에 기대지 않고 호출부에서도 개수를 고정한다.
+    const data = await api.get('/recommend?limit=3');
 
     if (!data.hasProfile) {
       return renderTasteEmpty(data.message);
@@ -193,6 +198,8 @@ async function loadTasteProfile() {
     // 차트는 요소가 문서에 붙은 뒤에 그린다.
     renderRadar(chartSlot, data.profile, { title: '내 취향 프로필' });
   } catch (error) {
+    // /me 확인 뒤 세션이 만료되어도 일반 오류가 아니라 비로그인 상태로 복구한다.
+    if (error instanceof ApiError && error.isUnauthorized) return renderTasteGuest();
     showError(tasteSlot, error, loadTasteProfile);
   }
 }
