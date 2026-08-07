@@ -134,7 +134,7 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
   /* 배경·글자색이 모드에 따라 바뀔 때만 부드럽게 넘어간다. */
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
 /* 영문 제목과 농장명. 크게, 아껴서 쓴다. */
@@ -344,7 +344,7 @@ a:hover { text-decoration-thickness: 2px; }
   line-height: 1.4;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
 .btn:hover {
@@ -452,7 +452,7 @@ a:hover { text-decoration-thickness: 2px; }
   background: var(--surface);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.2s ease-out;
 }
 
 .lot:hover { border-color: var(--fg); }
@@ -672,6 +672,15 @@ a:hover { text-decoration-thickness: 2px; }
   stroke-width: 1;
 }
 
+/* 도형과 꼭짓점을 묶은 층. 격자·축과 달리 이 층만 중심에서 펴진다.
+   기준점을 viewBox 한가운데로 고정해야 값이 한쪽으로 치우친 로트에서도
+   도형의 무게중심이 아니라 차트 중심에서 자라난다.
+   퍼센트를 쓰므로 차트 크기가 달라져도 따라간다. */
+.radar__data {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
 /* 데이터 도형. 안쪽을 옅게 채우고 테두리를 뚜렷하게 둔다. */
 .radar__shape {
   fill: var(--accent);
@@ -864,28 +873,40 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 /* 키보드 사용자가 반복되는 네비를 건너뛸 수 있게 한다. */
+/* 자리는 처음부터 제자리에 두고 화면 위로 밀어 올려 감춘다.
+   top을 옮기면 그때마다 레이아웃이 다시 잡히지만, 변형은 합성 단계에서 끝난다. */
 .skip-link {
   position: absolute;
   left: var(--space-4);
-  top: calc(var(--space-4) * -3);
+  top: var(--space-2);
   padding: var(--space-2) var(--space-3);
   background: var(--fg);
   color: var(--bg);
   border-radius: var(--radius);
   z-index: 20;
-  transition: top 0.15s ease;
+  transform: translateY(calc(-100% - var(--space-4)));
+  transition: transform 0.2s ease-out;
 }
 
-.skip-link:focus { top: var(--space-2); }
+.skip-link:focus { transform: translateY(0); }
 
-/* 움직임을 줄이도록 설정한 사용자에게는 애니메이션을 끈다. */
+/* 움직임을 줄이도록 설정한 사용자에게는 애니메이션을 끈다.
+   지연까지 함께 없애야 한다 — 시간만 0으로 만들면 delay가 남아 변화가 늦게 나타난다.
+   값이 사라지는 것이 아니라 그 사이를 잇는 움직임만 없어진다.
+
+   CSS로 덮을 수 없는 것이 둘 있어 JS에서 따로 막는다.
+     · element.animate()  → chart.js가 prefersReducedMotion()으로 확인한다
+     · scrollIntoView({ behavior: 'smooth' })
+       → 옵션으로 넘긴 값이 아래 scroll-behavior보다 우선하므로 common.js의 scrollToStart()가 판단한다 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }

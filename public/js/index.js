@@ -3,7 +3,8 @@
 import {
   layoutReady, api, getCurrentUser,
   createEl, clearChildren, renderLotCard,
-  showError, showEmpty, formatScore, formatUsd, formatNumber, formatDate
+  showError, showEmpty, formatScore, formatUsd, formatNumber, formatDate,
+  onceInView, countUp
 } from './common.js';
 
 const FEATURED_COUNT = 8;
@@ -37,24 +38,31 @@ async function loadOverview() {
     const data = await api.get('/stats/overview');
     clearChildren(overviewSlot);
 
+    // 값과 표시 방법을 함께 둔다. 중간값도 같은 함수로 만들어야 자릿수가 흔들리지 않는다.
     const cells = [
-      ['수상 로트', `${formatNumber(data.total_beans)}건`],
-      ['평균 점수', formatScore(data.avg_score)],
-      ['최고 낙찰가', `${formatUsd(data.max_bid_per_lb)} /lb`],
-      ['한국 업체 낙찰', `${formatNumber(data.korean_count)}건`]
+      ['수상 로트', data.total_beans, (v) => `${formatNumber(Math.round(v))}건`],
+      ['평균 점수', data.avg_score, (v) => formatScore(v)],
+      ['최고 낙찰가', data.max_bid_per_lb, (v) => `${formatUsd(v)} /lb`],
+      ['한국 업체 낙찰', data.korean_count, (v) => `${formatNumber(Math.round(v))}건`]
     ];
 
-    for (const [term, value] of cells) {
+    const valueSlots = [];
+    for (const [term, value, format] of cells) {
+      const slot = createEl('dd', { className: 'stat__value num', text: format(value) });
+      valueSlots.push([slot, value, format]);
+
       overviewSlot.append(
         createEl('div', {
           className: 'stat',
-          children: [
-            createEl('dt', { className: 'label', text: term }),
-            createEl('dd', { className: 'stat__value num', text: value })
-          ]
+          children: [createEl('dt', { className: 'label', text: term }), slot]
         })
       );
     }
+
+    // 숫자가 채워지는 과정을 보여준다. 화면 밖에서 끝나 버리지 않도록 들어올 때 시작한다.
+    onceInView(overviewSlot, () => {
+      for (const [slot, value, format] of valueSlots) countUp(slot, value, format);
+    });
   } catch {
     // 보조 지표라 실패해도 조용히 비워 둔다. 히어로 로트가 이미 핵심을 보여준다.
     clearChildren(overviewSlot);

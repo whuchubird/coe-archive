@@ -19,7 +19,7 @@ const PORT = Number(process.env.PORT) || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (!process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET이 없다. .env.example을 .env로 복사해 값을 채운다.');
+  throw new Error('SESSION_SECRET이 없습니다. 프로젝트 루트의 .env에 값을 설정해 주세요.');
 }
 
 const app = express();

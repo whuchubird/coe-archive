@@ -11,14 +11,26 @@ import 'dotenv/config';
 import pg from 'pg';
 import { Pool as NeonPool } from '@neondatabase/serverless';
 
-const connectionString = process.env.DATABASE_URL;
+const rawConnectionString = process.env.DATABASE_URL;
 
-if (!connectionString) {
-  throw new Error('DATABASE_URL이 없다. .env.example을 .env로 복사해 값을 채운다.');
+if (!rawConnectionString) {
+  throw new Error('DATABASE_URL이 없습니다. 프로젝트 루트의 .env에 값을 설정해 주세요.');
 }
 
 // 로컬 PostgreSQL은 평문 연결이지만 Neon은 TLS만 허용한다. 호스트를 보고 판단한다.
-const isLocalHost = /@(localhost|127\.0\.0\.1)/.test(connectionString);
+const isLocalHost = /@(localhost|127\.0\.0\.1)/.test(rawConnectionString);
+
+// Neon이 발급한 URL의 sslmode=require는 현재 pg에서 인증서 검증까지 하지만,
+// 다음 메이저 버전부터 의미가 약해질 예정이다. 현재와 미래 모두 호스트·인증서를
+// 검증하도록 원격 연결에는 verify-full을 명시한다. 다른 쿼리 파라미터는 그대로 둔다.
+function verifiedConnectionString(value) {
+  if (isLocalHost) return value;
+  const url = new URL(value);
+  url.searchParams.set('sslmode', 'verify-full');
+  return url.toString();
+}
+
+const connectionString = verifiedConnectionString(rawConnectionString);
 
 // rejectUnauthorized: true — 서버 인증서를 실제로 검증한다.
 // Neon 인증서는 공인 CA가 발급하므로 그대로 통과한다.

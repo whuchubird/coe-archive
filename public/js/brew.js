@@ -127,7 +127,9 @@ function updateTimerView() {
   clockOut.textContent = formatClock(elapsedSeconds);
 
   const ratio = Math.min(1, elapsedSeconds / TOTAL_SECONDS);
-  progressFill.style.width = `${(ratio * 100).toFixed(1)}%`;
+  // width 대신 scaleX로 늘린다. 폭을 바꾸면 매 프레임 레이아웃을 다시 계산하지만,
+  // 변형은 합성 단계에서 끝난다. 보이는 결과는 같다.
+  progressFill.style.transform = `scaleX(${ratio.toFixed(4)})`;
   progressBar.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
 
   const finished = elapsedSeconds >= TOTAL_SECONDS;

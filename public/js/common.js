@@ -344,6 +344,86 @@ export function showEmpty(target, message = '표시할 항목이 없습니다.')
 }
 
 // ============================================================
+// 움직임
+// ============================================================
+//
+// 이 사이트의 성격은 경매 전표와 커핑 점수표다. 시선을 끄는 움직임이 아니라
+// "값이 채워지는 과정"만 짧게 보여주고 멈춘다. 튕기거나 흔들리는 것은 쓰지 않는다.
+
+// 움직임을 줄여 달라고 설정한 사용자인지 확인한다.
+// 이 경우 애니메이션을 건너뛰고 최종 상태를 바로 보여준다 — 값은 똑같이 다 보인다.
+export function prefersReducedMotion() {
+  // matchMedia가 없는 환경에서 예외가 나면 차트 그리기 자체가 멈춘다.
+  // 설정을 알 수 없을 뿐이므로 '줄이지 않음'으로 보고 넘어간다.
+  if (typeof matchMedia !== 'function') return false;
+  return matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// 특정 영역의 머리로 화면을 옮긴다.
+//
+// scrollIntoView는 옵션으로 넘긴 behavior가 CSS의 scroll-behavior보다 우선한다.
+// 그래서 'smooth'를 그대로 두면 움직임을 줄여 달라고 설정해도 화면이 미끄러진다.
+// 어느 쪽이든 이동은 똑같이 일어나고, 그 과정을 보여줄지만 달라진다.
+export function scrollToStart(element) {
+  element?.scrollIntoView({
+    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    block: 'start'
+  });
+}
+
+// 요소가 화면에 들어오면 한 번만 실행한다.
+//
+// 화면 밖에서 애니메이션이 끝나 버리면 사용자는 결과만 보게 되어 효과가 없다.
+// IntersectionObserver가 없는 환경(구형 브라우저·검증용 스텁)에서는 바로 실행한다.
+export function onceInView(element, run, { threshold = 0.35 } = {}) {
+  if (typeof IntersectionObserver !== 'function') return run();
+
+  // 한 번의 콜백에 여러 entry가 함께 오기도 한다. 깃발을 따로 두어야 정말 한 번만 돈다.
+  let done = false;
+  const observer = new IntersectionObserver((entries) => {
+    if (done) return;
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    done = true;
+    observer.disconnect();
+    run();
+  }, { threshold });
+
+  observer.observe(element);
+}
+
+// 0에서 목표값까지 숫자를 올린다.
+//
+// format을 받는 이유는 화면에 나갈 문자열이 '74건', '$143.10 /lb'처럼
+// 숫자 말고도 붙는 것이 있어서다. 중간값도 같은 함수로 만들어야 자릿수가 흔들리지 않는다.
+// (숫자 칸은 tabular-nums라 폭도 고정된다)
+// 다른 움직임은 200ms지만 이것만 길다.
+// 전환은 '바뀌었다'만 알리면 되지만, 카운트업은 올라가는 과정 자체가 보여줄 내용이다.
+// 200ms면 숫자가 도는 것이 보이지 않아 기능이 없는 것과 같아진다.
+export function countUp(element, target, format, { duration = 900 } = {}) {
+  // 값이 없는 지표는 손대지 않는다.
+  // Number(null)은 0이라, 여기서 걸러내지 않으면 '자료 없음'이 '0'으로 둔갑한다.
+  if (target === null || target === undefined || target === '') return;
+
+  const end = Number(target);
+  if (!Number.isFinite(end)) return;
+
+  // 최종값을 먼저 넣어 둔다. 움직임을 건너뛰더라도 화면에는 항상 제 값이 남는다.
+  element.textContent = format(end);
+  if (prefersReducedMotion()) return;
+
+  const started = performance.now();
+  const step = (now) => {
+    const progress = Math.min(1, (now - started) / duration);
+    // 끝에서 부드럽게 멎는 곡선. 되돌아오거나 넘어가지 않는다.
+    const eased = 1 - (1 - progress) ** 3;
+    element.textContent = format(end * eased);
+    if (progress < 1) requestAnimationFrame(step);
+    else element.textContent = format(end);
+  };
+  requestAnimationFrame(step);
+}
+
+// ============================================================
 // 초기화
 // ============================================================
 

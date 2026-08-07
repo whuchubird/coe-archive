@@ -5,7 +5,7 @@ import {
   createEl, clearChildren, renderLotCard,
   showError, showEmpty, showLoading,
   formatScore, formatUsd, formatWeight, formatNumber, formatRank,
-  formatDecimal, formatDate
+  formatDecimal, formatDate, scrollToStart
 } from './common.js';
 import { renderRadar } from './chart.js';
 
@@ -425,7 +425,7 @@ function renderNotePagination(page, totalPages) {
     notePage = target;
     loadNotes();
     // 노트 섹션 머리로만 올린다. 페이지 전체를 위로 올리면 보고 있던 로트 정보가 사라진다.
-    document.querySelector('#notes-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToStart(document.querySelector('#notes-section'));
   };
 
   const addButton = (label, target, { disabled = false, current = false } = {}) => {

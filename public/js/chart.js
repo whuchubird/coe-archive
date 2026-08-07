@@ -3,6 +3,10 @@
 //
 // 지금은 레이더만 있다. 도넛·산점도는 통계 페이지를 만들 때 여기에 더한다.
 
+// 움직임 규칙은 사이트 전체가 같아야 해서 common.js 것을 가져다 쓴다.
+// (common.js는 chart.js를 부르지 않으므로 순환 참조가 생기지 않는다)
+import { prefersReducedMotion, onceInView } from './common.js';
+
 // SVG 요소는 createElement로 만들면 안 된다. 네임스페이스가 달라 화면에 나오지 않는다.
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -147,13 +151,16 @@ export function renderRadar(container, sensory, options = {}) {
   }
   svg.append(axisGroup);
 
-  // ── 데이터 도형 : 축마다 값에 비례한 거리 ─────────────────
-  svg.append(svgEl('polygon', {
+  // ── 데이터 도형 + 꼭짓점 ──────────────────────────────────
+  // 둘을 한 그룹에 담는다. 중심에서 펴지는 움직임을 그룹 하나에만 걸면 되고,
+  // 격자와 축은 제자리에 있어 "고정된 눈금 위에 값이 찍히는" 읽기가 유지된다.
+  const dataGroup = svgEl('g', { class: 'radar__data' });
+
+  dataGroup.append(svgEl('polygon', {
     class: 'radar__shape',
     points: polygonPoints(cx, cy, axisCount, (i) => (radius * valueOf(i)) / max)
   }));
 
-  // ── 꼭짓점 점 ─────────────────────────────────────────────
   const dots = svgEl('g', { class: 'radar__dot-group' });
   for (let i = 0; i < axisCount; i += 1) {
     const point = pointAt(cx, cy, (radius * valueOf(i)) / max, axisAngle(i, axisCount));
@@ -164,7 +171,8 @@ export function renderRadar(container, sensory, options = {}) {
       r: 3.5
     }));
   }
-  svg.append(dots);
+  dataGroup.append(dots);
+  svg.append(dataGroup);
 
   // ── 축 레이블과 값 ────────────────────────────────────────
   const labels = svgEl('g', { class: 'radar__label-group' });
@@ -195,7 +203,30 @@ export function renderRadar(container, sensory, options = {}) {
   svg.append(labels);
 
   container.append(svg);
+  expandFromCenter(dataGroup);
   return svg;
+}
+
+// 데이터 도형을 중심에서 바깥으로 펴 보인다.
+//
+// 변형 기준점은 CSS의 .radar__data가 정한다 — 어디서 자라날지는 생김새의 문제고,
+// 여기서는 언제 얼마나 움직일지만 다룬다.
+//
+// 되돌아오거나 넘어가는 곡선은 쓰지 않는다. 끝에서 조용히 멎기만 한다.
+function expandFromCenter(group) {
+  if (prefersReducedMotion() || typeof group.animate !== 'function') return;
+
+  const play = () => group.animate(
+    [
+      { transform: 'scale(0)', opacity: 0 },
+      { transform: 'scale(1)', opacity: 1 }
+    ],
+    // 200ms 안팎, ease-out 계열. 이 곡선은 끝에서 감속만 하고 되돌아오거나 넘어가지 않는다.
+    { duration: 200, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' }
+  );
+
+  // 화면 밖에서 끝나 버리면 사용자는 결과만 본다. 들어올 때 시작한다.
+  onceInView(group, play);
 }
 
 // ============================================================

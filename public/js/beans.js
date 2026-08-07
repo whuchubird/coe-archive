@@ -6,7 +6,7 @@
 import {
   layoutReady, api, buildQuery, ApiError,
   createEl, clearChildren, renderLotCard,
-  showLoading, showError, showEmpty, formatNumber
+  showLoading, showError, showEmpty, formatNumber, scrollToStart
 } from './common.js';
 
 // ============================================================
@@ -194,7 +194,7 @@ function renderPagination(page, totalPages) {
     state.page = target;
     load();
     // 페이지를 넘기면 목록 맨 위로 올린다. 스크롤이 중간에 남아 있으면 바뀐 걸 알기 어렵다.
-    document.querySelector('#results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToStart(document.querySelector('#results'));
   };
 
   const addButton = (label, target, { disabled = false, current = false } = {}) => {
