@@ -258,7 +258,6 @@ function renderRecentNotes(notes) {
     const row = createEl('tr');
     const lot = createEl('td');
     lot.append(createEl('a', {
-      className: 'link',
       text: note.farm,
       attrs: { href: `/detail.html?id=${encodeURIComponent(note.bean_id)}` }
     }));

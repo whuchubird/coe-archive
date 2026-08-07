@@ -135,6 +135,9 @@ CREATE TABLE notes (
   sweetness   NUMERIC(2,1),
   aftertaste  NUMERIC(2,1),
   balance     NUMERIC(2,1),
+  -- 공개 여부. 공개 노트는 다른 사용자도 로트 상세에서 내용까지 볼 수 있고,
+  -- 비공개 노트는 아이디·별점·작성일만 보인다. 기본은 공개다.
+  is_public   BOOLEAN NOT NULL DEFAULT TRUE,
   created_at  TIMESTAMPTZ DEFAULT now(),
   updated_at  TIMESTAMPTZ DEFAULT now()
 );
@@ -162,6 +165,10 @@ CREATE INDEX idx_beans_country ON beans (country);
 
 -- 내 노트 목록: user_id로 거르고 최신순 정렬. 두 컬럼을 한 인덱스로 함께 처리한다.
 CREATE INDEX idx_notes_user_created ON notes (user_id, created_at DESC);
+
+-- 로트 상세의 공개 노트 목록: bean_id로 거르고 최신순 정렬.
+-- 위 인덱스와 컬럼 순서가 반대라 서로를 대신하지 못한다. 주 질의 패턴이 둘이므로 인덱스도 둘이다.
+CREATE INDEX idx_notes_bean_created ON notes (bean_id, created_at DESC);
 
 -- 아이디는 대소문자를 구분하지 않는다. 'coe'로 가입했으면 'COE'로는 가입할 수 없다.
 -- users.username의 UNIQUE 제약은 글자가 정확히 같을 때만 막아 주므로,

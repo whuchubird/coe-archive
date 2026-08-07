@@ -60,6 +60,17 @@
       </div>
       <div class="grid" data-similar></div>
     </section>
+
+    <!-- 이 로트에 달린 테이스팅 노트. 비로그인도 볼 수 있다. -->
+    <section class="section" id="notes-section" aria-labelledby="bean-notes-title">
+      <div class="section__head notes-head">
+        <h2 id="bean-notes-title" class="serif">Tasting notes</h2>
+        <p class="muted" data-notes-summary aria-live="polite"></p>
+      </div>
+
+      <div data-bean-notes></div>
+      <nav class="pagination" data-notes-pagination aria-label="노트 페이지 이동"></nav>
+    </section>
   </main>
 
   <footer class="site-footer">

@@ -27,6 +27,7 @@ const noteList = document.querySelector('[data-note-list]');
 const noteCount = document.querySelector('[data-note-count]');
 const favList = document.querySelector('[data-fav-list]');
 const favCount = document.querySelector('[data-fav-count]');
+const requestedEditId = new URLSearchParams(location.search).get('edit');
 
 // 화면에 올라와 있는 노트. 수정 모달을 채울 때 다시 조회하지 않으려고 들고 있는다.
 let notes = [];
@@ -153,6 +154,9 @@ function readNoteForm(form) {
       brew_method: form.brew_method.value.trim(),
       rating: Number(rating.value),
       comment: comment.trim(),
+      // 체크박스는 .checked로 읽는다. .value를 쓰면 문자열 'on'이 되고,
+      // 서버는 불리언만 받으므로 그대로 보내면 거부된다.
+      isPublic: form.isPublic.checked,
       ...readSensory(form)
     }
   };
@@ -196,7 +200,17 @@ function renderNoteCard(note) {
           })
         ]
       }),
-      renderStars(note.rating)
+      createEl('div', {
+        className: 'note-card__status',
+        children: [
+          renderStars(note.rating),
+          // 공개 여부를 목록에서 바로 알 수 있게 배지로 붙인다.
+          createEl('span', {
+            className: note.isPublic ? 'badge badge--public' : 'badge',
+            text: note.isPublic ? '공개' : '비공개'
+          })
+        ]
+      })
     ]
   });
 
@@ -350,6 +364,7 @@ function openEdit(note) {
   editForm.bean_id.value = note.bean_id;
   editForm.brew_method.value = note.brew_method ?? '';
   editForm.comment.value = note.comment ?? '';
+  editForm.isPublic.checked = note.isPublic !== false;
 
   const rating = editForm.querySelector(`input[name="rating"][value="${note.rating}"]`);
   if (rating) rating.checked = true;
@@ -444,4 +459,17 @@ if (requireLogin()) {
   }
 
   await Promise.all([loadNotes(), loadFavorites()]);
+
+  // 상세 화면의 "노트 수정" 링크로 왔다면 해당 노트의 수정 모달을 바로 연다.
+  const editId = Number(requestedEditId);
+  const requestedNote = Number.isInteger(editId)
+    ? notes.find((note) => note.id === editId)
+    : null;
+  if (requestedNote) {
+    const params = new URLSearchParams(location.search);
+    params.delete('edit');
+    const query = params.toString();
+    history.replaceState(null, '', `${location.pathname}${query ? `?${query}` : ''}`);
+    openEdit(requestedNote);
+  }
 }

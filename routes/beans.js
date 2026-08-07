@@ -25,6 +25,12 @@ const MAX_LIMIT = 100;
 // 74건짜리 데이터에서 이보다 큰 페이지 번호는 의미가 없다. OFFSET 폭주를 막는 상한.
 const MAX_PAGE = 1_000_000;
 
+// 로트별 공개 노트 목록. 목록보다 한 화면에 적게 들어가므로 기본값이 더 작다.
+const NOTE_DEFAULT_LIMIT = 10;
+const NOTE_MAX_LIMIT = 50;
+
+const NOTE_SENSORY_AXES = ['aroma', 'acidity', 'body', 'sweetness', 'aftertaste', 'balance'];
+
 // 감각 슬라이더 3종. 쿼리 파라미터 이름과 sensory 컬럼을 짝지어 둔다.
 const SENSORY_FILTERS = {
   minAcidity: 's.acidity',
@@ -142,10 +148,10 @@ export function buildOrderClause(sort, order) {
 // page·limit을 정수로 바꾸고 범위를 제한한다. limit이 커지면 한 번에 전체를 긁어갈 수 있어 상한을 둔다.
 // page에도 상한이 필요하다. page가 지나치게 크면 OFFSET이 PostgreSQL의 bigint 범위를 넘어
 // 쿼리 자체가 실패한다 — 사용자 입력 때문에 서버 오류가 나는 셈이라 미리 잘라낸다.
-function buildPagination(query) {
+function buildPagination(query, { defaultLimit = DEFAULT_LIMIT, maxLimit = MAX_LIMIT } = {}) {
   const page = Math.min(MAX_PAGE, Math.max(1, Math.trunc(parseNumber(query.page) ?? 1)));
-  const requested = Math.trunc(parseNumber(query.limit) ?? DEFAULT_LIMIT);
-  const limit = Math.min(MAX_LIMIT, Math.max(1, requested));
+  const requested = Math.trunc(parseNumber(query.limit) ?? defaultLimit);
+  const limit = Math.min(maxLimit, Math.max(1, requested));
   return { page, limit, offset: (page - 1) * limit };
 }
 
@@ -345,6 +351,129 @@ router.get('/:id/similar', async (req, res) => {
     return res.status(404).json({ error: '해당 로트를 찾을 수 없습니다.' });
   }
   res.json(similar.rows);
+});
+
+// ============================================================
+// 로트별 테이스팅 노트 (공개 노트)
+// ============================================================
+
+// 한 페이지 분량의 노트를 읽는다.
+//
+// 비공개 노트의 세부 내용은 SQL 단계에서 잘라낸다. 전부 읽어 온 뒤 응답에서 지우면
+// 잠깐이라도 서버 메모리에 남고, 지우는 코드를 한 줄 빠뜨리는 순간 그대로 나간다.
+// 애초에 DB에서 꺼내지 않는 편이 확실하다.
+//
+// viewerId가 null이면(비로그인) `n.user_id = $2`는 참이 아니라 NULL이 되므로
+// 비공개 노트의 CASE는 어떤 경우에도 값을 내주지 않는다.
+async function fetchBeanNotes(beanId, page, limit, viewerId) {
+  const visible = 'n.is_public OR n.user_id = $2';
+  const maskedAxes = NOTE_SENSORY_AXES
+    .map((axis) => `CASE WHEN ${visible} THEN n.${axis}::float8 END AS ${axis}`)
+    .join(',\n       ');
+
+  const { rows } = await pool.query(
+    `SELECT
+       n.id, n.user_id, n.rating, n.created_at, n.is_public,
+       u.username,
+       CASE WHEN ${visible} THEN n.brew_method END AS brew_method,
+       CASE WHEN ${visible} THEN n.comment END     AS comment,
+       ${maskedAxes}
+     FROM notes n
+     JOIN users u ON u.id = n.user_id
+     WHERE n.bean_id = $1
+     ORDER BY n.created_at DESC, n.id DESC
+     LIMIT $3 OFFSET $4`,
+    [beanId, viewerId, limit, (page - 1) * limit]
+  );
+  return rows;
+}
+
+// 로트 전체 노트의 건수와 평균 별점.
+//
+// 목록 쿼리와 따로 두는 이유는 범위가 다르기 때문이다. 목록은 현재 페이지 10건이지만
+// 평균은 그 로트의 모든 노트가 대상이라, 목록에서 계산하면 페이지를 넘길 때마다 값이 달라진다.
+// 별점은 공개·비공개 모두 보이는 항목이라 집계에서 빼지 않는다.
+async function fetchNoteSummary(beanId) {
+  const { rows } = await pool.query(
+    `SELECT
+       COUNT(*)::int                  AS count,
+       ROUND(AVG(rating), 1)::float8  AS avg_rating
+     FROM notes
+     WHERE bean_id = $1`,
+    [beanId]
+  );
+  return { count: rows[0].count, avgRating: rows[0].avg_rating };
+}
+
+// 조회 결과 한 줄을 응답 형태로 바꾼다.
+//
+// 값이 없는 항목은 null을 담지 않고 키 자체를 넣지 않는다.
+// 그래야 "비공개라 가려진 것"과 "원래 안 쓴 것"이 응답에서 같은 모양이 되어,
+// 비공개 노트에 코멘트가 있었는지조차 밖에서 알 수 없다.
+function maskPrivateNote(row, viewerId) {
+  const isMine = viewerId !== null && row.user_id === viewerId;
+
+  const note = {
+    id: row.id,
+    username: row.username,
+    rating: row.rating,
+    createdAt: row.created_at,
+    isPublic: row.is_public,
+    isMine
+  };
+
+  // 비공개이고 남의 노트면 SQL이 이미 전부 null로 내려보냈다. 여기서 더 볼 것이 없다.
+  if (!row.is_public && !isMine) return note;
+
+  if (row.brew_method !== null) note.brewMethod = row.brew_method;
+  if (row.comment !== null) note.comment = row.comment;
+
+  // 6축이 모두 비어 있으면 sensory 자체를 넣지 않는다. null만 담긴 객체는 화면에서 쓸 데가 없다.
+  const sensory = {};
+  for (const axis of NOTE_SENSORY_AXES) {
+    if (row[axis] !== null) sensory[axis] = row[axis];
+  }
+  if (Object.keys(sensory).length > 0) note.sensory = sensory;
+
+  return note;
+}
+
+// 로트별 테이스팅 노트 목록.
+//
+// 로그인하지 않아도 볼 수 있다. 다만 로그인해 있으면 자기 노트를 알아보고,
+// 비공개로 둔 자기 글도 읽을 수 있다. 같은 주소가 보는 사람에 따라 다른 응답을 준다.
+router.get('/:id/notes', async (req, res) => {
+  // 같은 URL이어도 세션 소유자는 자기 비공개 노트의 내용을 받는다.
+  // 개인화 응답이 브라우저나 공유 캐시에 남아 다른 사람에게 재사용되지 않게 한다.
+  res.set('Cache-Control', 'private, no-store');
+  res.vary('Cookie');
+
+  const { page, limit } = buildPagination(req.query, {
+    defaultLimit: NOTE_DEFAULT_LIMIT,
+    maxLimit: NOTE_MAX_LIMIT
+  });
+  // 세션이 없으면 비로그인이다. 화면이 보낸 값이 아니라 서버가 들고 있는 세션으로 판정한다.
+  const viewerId = req.session?.userId ?? null;
+
+  // 셋은 서로를 기다릴 이유가 없어 동시에 보낸다.
+  const [exists, rows, summary] = await Promise.all([
+    pool.query('SELECT 1 FROM beans WHERE id = $1', [req.params.id]),
+    fetchBeanNotes(req.params.id, page, limit, viewerId),
+    fetchNoteSummary(req.params.id)
+  ]);
+
+  // 없는 로트에 빈 목록을 주면 /api/beans/:id가 404를 주는 것과 어긋난다.
+  if (exists.rowCount === 0) {
+    return res.status(404).json({ error: '해당 로트를 찾을 수 없습니다.' });
+  }
+
+  res.json({
+    items: rows.map((row) => maskPrivateNote(row, viewerId)),
+    total: summary.count,
+    page,
+    totalPages: Math.max(1, Math.ceil(summary.count / limit)),
+    summary
+  });
 });
 
 // 가공방식 5종. 가이드 페이지의 비교표와 아코디언이 이 값을 그대로 쓴다.

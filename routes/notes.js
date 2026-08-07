@@ -32,6 +32,7 @@ const NOTE_COLUMNS = `
   n.sweetness::float8  AS sweetness,
   n.aftertaste::float8 AS aftertaste,
   n.balance::float8    AS balance,
+  n.is_public AS "isPublic",
   n.created_at, n.updated_at,
   b.farm, b.country_ko, b.award, b.rank,
   b.score::float8 AS bean_score,
@@ -60,6 +61,19 @@ function parseAxis(value) {
     return { error: `감각 점수는 ${AXIS_MIN}~${AXIS_MAX} 사이여야 합니다.` };
   }
   return { value: parsed };
+}
+
+// 공개 여부를 확인한다. 불리언만 받는다.
+//
+// 문자열을 그대로 쓰면 안 된다. Boolean('false')는 true라서,
+// 비공개로 두려던 노트가 공개로 뒤집힌다. 그래서 형 변환 없이 타입부터 본다.
+// 값이 없으면 '지정 안 함'(null)으로 두고, 무엇을 기본으로 삼을지는 호출부가 정한다.
+function parseIsPublic(value) {
+  if (value === undefined || value === null) return { value: null };
+  if (typeof value !== 'boolean') {
+    return { error: '공개 여부는 true 또는 false여야 합니다.' };
+  }
+  return { value };
 }
 
 // 노트 입력값을 확인하고 DB에 넣을 형태로 정리한다.
@@ -108,13 +122,18 @@ function validateNote(body) {
     axes[axis] = parsed.value;
   }
 
+  const isPublic = parseIsPublic((body ?? {}).isPublic);
+  if (isPublic.error) return { error: isPublic.error };
+
   return {
     value: {
       beanId: beanId.trim(),
       brewMethod: typeof brewMethod === 'string' && brewMethod.trim() !== '' ? brewMethod.trim() : null,
       rating: ratingNumber,
       comment: trimmedComment === '' ? null : trimmedComment,
-      axes
+      axes,
+      // null이면 '지정 안 함'이다. 작성은 공개를 기본으로, 수정은 원래 값을 지킨다.
+      isPublic: isPublic.value
     }
   };
 }
@@ -153,7 +172,7 @@ router.post('/', async (req, res) => {
   const { error, value } = validateNote(req.body);
   if (error) return res.status(400).json({ error });
 
-  const { beanId, brewMethod, rating, comment, axes } = value;
+  const { beanId, brewMethod, rating, comment, axes, isPublic } = value;
 
   try {
     // 방금 넣은 행의 id를 받아 같은 조건으로 다시 조회해 로트 정보까지 붙여 돌려준다.
@@ -161,8 +180,8 @@ router.post('/', async (req, res) => {
       `WITH inserted AS (
          INSERT INTO notes (
            user_id, bean_id, brew_method, rating, comment,
-           aroma, acidity, body, sweetness, aftertaste, balance
-         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+           aroma, acidity, body, sweetness, aftertaste, balance, is_public
+         ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
          RETURNING *
        )
        SELECT ${NOTE_COLUMNS}
@@ -171,7 +190,9 @@ router.post('/', async (req, res) => {
        JOIN processes p ON p.key = b.process_key`,
       [
         req.session.userId, beanId, brewMethod, rating, comment,
-        axes.aroma, axes.acidity, axes.body, axes.sweetness, axes.aftertaste, axes.balance
+        axes.aroma, axes.acidity, axes.body, axes.sweetness, axes.aftertaste, axes.balance,
+        // 보내지 않았으면 공개로 만든다. 컬럼 기본값과 같은 값을 앱에서도 분명히 한다.
+        isPublic ?? true
       ]
     );
     res.status(201).json(rows[0]);
@@ -194,7 +215,7 @@ router.put('/:id', async (req, res) => {
   const { error, value } = validateNote(req.body);
   if (error) return res.status(400).json({ error });
 
-  const { beanId, brewMethod, rating, comment, axes } = value;
+  const { beanId, brewMethod, rating, comment, axes, isPublic } = value;
 
   try {
     const { rows } = await pool.query(
@@ -203,6 +224,7 @@ router.put('/:id', async (req, res) => {
            bean_id = $3, brew_method = $4, rating = $5, comment = $6,
            aroma = $7, acidity = $8, body = $9,
            sweetness = $10, aftertaste = $11, balance = $12,
+           is_public = COALESCE($13, is_public),
            updated_at = now()
          WHERE id = $1 AND user_id = $2
          RETURNING *
@@ -213,7 +235,10 @@ router.put('/:id', async (req, res) => {
        JOIN processes p ON p.key = b.process_key`,
       [
         noteId, req.session.userId, beanId, brewMethod, rating, comment,
-        axes.aroma, axes.acidity, axes.body, axes.sweetness, axes.aftertaste, axes.balance
+        axes.aroma, axes.acidity, axes.body, axes.sweetness, axes.aftertaste, axes.balance,
+        // 보내지 않았으면 COALESCE가 원래 값을 지킨다.
+        // 여기서 true를 기본으로 삼으면, 필드를 빠뜨린 요청이 비공개 노트를 공개로 바꿔 버린다.
+        isPublic
       ]
     );
 

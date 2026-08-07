@@ -50,6 +50,11 @@
       <p class="muted">마신 로트를 기록하고 다시 찾아봅니다.</p>
     </div>
 
+    <p class="visibility-policy">
+      공개 노트 기능 도입 전에 작성된 기존 노트는 공개 상태로 전환되었습니다.
+      공개를 원하지 않으면 아래 내 노트 목록에서 수정해 비공개로 변경해 주세요.
+    </p>
+
     <div class="notes-layout">
 
       <!-- ── 작성 폼 ──────────────────────────────────────── -->
@@ -86,6 +91,18 @@
             <textarea class="textarea" id="create-comment" name="comment"
                       maxlength="500" placeholder="향, 첫 모금, 식은 뒤의 인상"></textarea>
             <p class="muted char-count" data-count-for="create-comment">0 / 500</p>
+          </div>
+
+          <!-- 공개 여부. 기본은 공개다. -->
+          <div class="field visibility">
+            <div class="visibility__row">
+              <input type="checkbox" id="create-public" name="isPublic" checked>
+              <label class="field__label" for="create-public">이 노트를 공개합니다</label>
+            </div>
+            <p class="visibility__hint">
+              공개하면 다른 사용자가 이 로트 페이지에서 내용을 볼 수 있습니다.
+              비공개로 두면 아이디와 별점만 표시됩니다.
+            </p>
           </div>
 
           <p class="form-error" data-error="create" role="alert" hidden></p>
@@ -145,6 +162,17 @@
         <label class="field__label" for="edit-comment">코멘트</label>
         <textarea class="textarea" id="edit-comment" name="comment" maxlength="500"></textarea>
         <p class="muted char-count" data-count-for="edit-comment">0 / 500</p>
+      </div>
+
+      <div class="field visibility">
+        <div class="visibility__row">
+          <input type="checkbox" id="edit-public" name="isPublic">
+          <label class="field__label" for="edit-public">이 노트를 공개합니다</label>
+        </div>
+        <p class="visibility__hint">
+          공개하면 다른 사용자가 이 로트 페이지에서 내용을 볼 수 있습니다.
+          비공개로 두면 아이디와 별점만 표시됩니다.
+        </p>
       </div>
 
       <p class="form-error" data-error="edit" role="alert" hidden></p>
